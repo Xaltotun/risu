@@ -147,6 +147,17 @@ int apprentice(int sock)
 
 int ismaster;
 
+void usage (void)
+{
+   fprintf(stderr, "Usage: risu [--master] [--host <ip>] [--port <port>] <image file>\n\n");
+   fprintf(stderr, "Run through the pattern file verifying each instruction\n");
+   fprintf(stderr, "between master and apprentice risu processes.\n\n");
+   fprintf(stderr, "Options:\n");
+   fprintf(stderr, "  --master          Be the master (server)\n");
+   fprintf(stderr, "  -h, --host=HOST   Specify master host machine (apprentice only)\n");
+   fprintf(stderr, "  -p, --port=PORT   Specify the port to connect to/listen on (default 9191)\n");
+}
+
 int main(int argc, char **argv)
 {
    // some handy defaults to make testing easier
@@ -161,6 +172,7 @@ int main(int argc, char **argv)
    {
       static struct option longopts[] = 
          {
+            { "help", no_argument, 0, '?'},
             { "master", no_argument, &ismaster, 1 },
             { "host", required_argument, 0, 'h' },
             { "port", required_argument, 0, 'p' },
@@ -194,7 +206,7 @@ int main(int argc, char **argv)
          }
          case '?':
          {
-            /* error message printed by getopt_long */
+            usage();
             exit(1);
          }
          default:
@@ -205,7 +217,8 @@ int main(int argc, char **argv)
    imgfile = argv[optind];
    if (!imgfile)
    {
-      fprintf(stderr, "must specify image file name\n");
+      fprintf(stderr, "Error: must specify image file name\n\n");
+      usage();
       exit(1);
    }
 
