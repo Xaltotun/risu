@@ -1656,12 +1656,13 @@ ANDSi_RES8 A64 sf:1 11 100100 sn:1 immr:6 111111 rn:5 rd:5
 # C3.4.5 Move wide (immediate)
 # 31 |30 29| 28 27 26 25 24 23 | 22 21 | 20       5 4    0
 # sf |opc  |  1  0  0  1  0  1 |  hw   |    imm16     Rd
+# hw is shift/16 (bigger values invalid for 32 bit)
 
-MOVN A64 sf:1 00 100101 00 imm:16 rd:5
+MOVN A64 sf:1 00 100101 hw:2 imm:16 rd:5
 
-MOVZ A64 sf:1 10 100101 00 imm:16 rd:5
+MOVZ A64 sf:1 10 100101 hw:2 imm:16 rd:5
 
-MOVK A64 sf:1 11 100101 00 imm:16 rd:5
+MOVK A64 sf:1 11 100101 hw:2 imm:16 rd:5
 
 # C3.4.6 PC-rel. addressing NIY
 
