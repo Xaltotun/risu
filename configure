@@ -37,13 +37,16 @@ generate_makefilein() {
     echo "CC:=${CC}" >> $m
     echo "AS:=${AS}" >> $m
     echo "OBJCOPY:=${OBJCOPY}" >> $m
+    echo "STATIC:=${STATIC}" >> $m
 
     echo "...done"
 }
 
 usage() {
     cat <<EOF
-Usage: [VAR=VALUE]... ./configure [-h|--help]
+Usage: [VAR=VALUE]... ./configure [-h|--help] [-s|--static]
+
+  -s/--static - force a static build of risu
 
 To assign environment variables (e.g., CC, CFLAGS...), specify them as
 VAR=VALUE.  See below for descriptions of some of the useful variables.
@@ -66,12 +69,17 @@ EOF
 }
 
 # STARTUP: entry point
+STATIC=""
 
 for opt do
   case "$opt" in
       --help | -h)
           usage;
           exit 0;;
+      --static | -s)
+          STATIC="-static"
+          ;;
+
   esac
 done
 
