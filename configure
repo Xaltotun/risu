@@ -37,6 +37,7 @@ generate_makefilein() {
     echo "CC:=${CC}" >> $m
     echo "AS:=${AS}" >> $m
     echo "OBJCOPY:=${OBJCOPY}" >> $m
+    echo "OBJDUMP:=${OBJDUMP}" >> $m
     echo "STATIC:=${STATIC}" >> $m
 
     echo "...done"
@@ -64,6 +65,7 @@ Some influential environment variables:
 
   AS           assembler command
   OBJCOPY      object copy utility command
+  OBJDUMP      object dump utility command
 
 EOF
 }
@@ -86,6 +88,7 @@ done
 CC="${CC-${CROSS_PREFIX}gcc}"
 AS="${AS-${CROSS_PREFIX}as}"
 OBJCOPY="${OBJCOPY-${CROSS_PREFIX}objcopy}"
+OBJDUMP="${OBJDUMP-${CROSS_PREFIX}objdump}"
 
 if test "x${ARCH}" = "x"; then
     guess_arch

@@ -1,6 +1,7 @@
 # Ignore binaries and any lurking coredumps
 *.o
 *.bin
+*.risu.asm
 risu
 core
 config.h

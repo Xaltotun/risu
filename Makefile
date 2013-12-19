@@ -20,12 +20,21 @@ SRCS=risu.c comms.c risu_$(ARCH).c risu_reginfo_$(ARCH).c
 HDRS=risu.h
 BINS=test_$(ARCH).bin
 
+# For dumping test patterns
+RISU_BINS=$(wildcard *.risu.bin)
+RISU_ASMS=$(patsubst %.bin,%.asm,$(RISU_BINS))
+
 OBJS=$(SRCS:.c=.o)
 
 all: $(PROG) $(BINS)
 
+dump: $(RISU_ASMS)
+
 $(PROG): $(OBJS)
 	$(CC) $(STATIC) $(CFLAGS) -o $@ $^
+
+%.risu.asm: %.risu.bin
+	${OBJDUMP} -b binary -m $(ARCH) -D $^ > $@
 
 %.o: %.c $(HDRS)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ -c $<
