@@ -2057,8 +2057,11 @@ FMOViv A64_V 0 Q:1 op:1 0111100000 abc:3 1111 01 defgh:5 rd:5 \
 # UnallocatedEncoding() op==1 with Q==0
 FMOViv_RES A64_V 0 0 1 0111100000 abc:3 1111 01 defgh:5 rd:5
 
+# C6.3.12
+# 31  30   29                    19  18 16   15   12 11 10 9     5   4  0
+#  0 [ Q ]  1 0 1 1 1 1 1 0 0 0 0 0 [ abc ] [ cmode ] 0 1 [ defgh ] [ Rd ]
 BICiv A64_V 0 Q:1 1 0111100000 abc:3 cm:4 01 defgh:5 rd:5 \
-!constraints { $cm <= 11 && ($cm % 2) == 1; }
+!constraints { $cm <= 11 && ($cm & 0x1) == 1; }
 
 # C3.6.7 AdvSIMD scalar copy
 # Includes just one instruction (DUP element); this pattern includes
