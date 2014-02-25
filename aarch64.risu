@@ -1671,6 +1671,9 @@ MOVK A64 sf:1 11 100101 hw:2 imm:16 rd:5
 # C3.5.1 Add/subtract (extended register)
 # 31 30 29 28 27 26 25 24 |23 22| 21 | 20    16 15    13 12  10 9    5 4    0
 # sf op  S  0  1  0  1  1 | opt |  1 |    Rm     option   imm3    Rn     Rd
+#
+# NB: rn == 31 is perfectly valid, however RISU doesn't generate instructions that
+# use the SP as that can cause problems with different SPs across systems
 
 ADDx A64 sf:1 00 01011 00 1 rm:5 option:3 imm:3 rn:5 rd:5 \
 !constraints { $rn != 31 && $rd != 31 && $imm <= 4; }
