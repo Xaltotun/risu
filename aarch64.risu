@@ -2218,6 +2218,46 @@ SQNEG_S2MISC A64_V 01 1 11110 size:2 10000 00111 10 rn:5 rd:5
 
 # XXX lots of others in this group
 
+# C3.6.12 AdvSIMD scalar two-reg misc
+# 31 30 29 28 27 26 25 24 23 22 21 20      16     12 11 10 9     5  4    0
+#  0  1 U   1  1  1  1  0  size  1 0 0 0 0 [ opcode ] 1 0 [  Rn  ] [  Rd  ]
+# U size opcode
+SUQADDs  A64_V          01 0 11110   size:2 10000 00011 10 rn:5 rd:5 
+SQABSs  A64_V           01 0 11110   size:2 10000 00111 10 rn:5 rd:5 
+CMGTzs  A64_V           01 0 11110   size:2 10000 01000 10 rn:5 rd:5 
+CMEQzs  A64_V           01 0 11110   size:2 10000 01001 10 rn:5 rd:5 
+CMLTzs  A64_V           01 0 11110   size:2 10000 01010 10 rn:5 rd:5 
+ABSs  A64_V             01 0 11110   size:2 10000 01011 10 rn:5 rd:5 
+SQXTN_SQXTN2s  A64_V    01 0 11110   size:2 10000 10100 10 rn:5 rd:5 
+FCVTNSvs  A64_V         01 0 11110 0 size:1 10000 11010 10 rn:5 rd:5 
+FCVTMSvs  A64_V         01 0 11110 0 size:1 10000 11011 10 rn:5 rd:5 
+FCVTASvs  A64_V         01 0 11110 0 size:1 10000 11100 10 rn:5 rd:5 
+SCVTFvis  A64_V         01 0 11110 0 size:1 10000 11101 10 rn:5 rd:5 
+FCMGTzs  A64_V          01 0 11110 1 size:1 10000 01100 10 rn:5 rd:5 
+FCMEQzs  A64_V          01 0 11110 1 size:1 10000 01101 10 rn:5 rd:5 
+FCMLTzs  A64_V          01 0 11110 1 size:1 10000 01110 10 rn:5 rd:5 
+FCVTPSvs  A64_V         01 0 11110 1 size:1 10000 11010 10 rn:5 rd:5 
+FCVTZSvis  A64_V        01 0 11110 1 size:1 10000 11011 10 rn:5 rd:5 
+FRECPEs  A64_V          01 0 11110 1 size:1 10000 11101 10 rn:5 rd:5 
+FRECPX  A64_V           01 0 11110 1 size:1 10000 11111 10 rn:5 rd:5 
+USQADDs  A64_V          01 1 11110   size:2 10000 00011 10 rn:5 rd:5 
+SQNEGs  A64_V           01 1 11110   size:2 10000 00111 10 rn:5 rd:5 
+CMGzs  A64_V            01 1 11110   size:2 10000 01000 10 rn:5 rd:5 
+CMLEzs  A64_V           01 1 11110   size:2 10000 01001 10 rn:5 rd:5 
+NEGvs  A64_V            01 1 11110   size:2 10000 01011 10 rn:5 rd:5 
+SQXTUN_SQXTUN2s  A64_V  01 1 11110   size:2 10000 10010 10 rn:5 rd:5 
+UQXTN_UQXTN2s  A64_V    01 1 11110   size:2 10000 10100 10 rn:5 rd:5 
+FCVTXN_FCVTXN2s  A64_V  01 1 11110 0 size:1 10000 10110 10 rn:5 rd:5 
+FCVTNUvs  A64_V         01 1 11110 0 size:1 10000 11010 10 rn:5 rd:5 
+FCVTMUvs  A64_V         01 1 11110 0 size:1 10000 11011 10 rn:5 rd:5 
+FCVTAUvs  A64_V         01 1 11110 0 size:1 10000 11100 10 rn:5 rd:5 
+UCVTFvis  A64_V         01 1 11110 0 size:1 10000 11101 10 rn:5 rd:5 
+FCMGEzs  A64_V          01 1 11110 1 size:1 10000 01100 10 rn:5 rd:5 
+FCMLEzs  A64_V          01 1 11110 1 size:1 10000 01101 10 rn:5 rd:5 
+FCVTPUvs  A64_V         01 1 11110 1 size:1 10000 11010 10 rn:5 rd:5 
+FCVTZUvis  A64_V        01 1 11110 1 size:1 10000 11011 10 rn:5 rd:5 
+FRSQRTEs  A64_V         01 1 11110 1 size:1 10000 11101 10 rn:5 rd:5 
+ 
 # C3.6.13 AdvSIMD scalar x indexed element
 # Complete coverage.
 
