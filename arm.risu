@@ -101,6 +101,15 @@ MLS A1 cond:4 00000110 rd:4 ra:4 rm:4 1001 rn:4
 
 REVSH A1 cond:4 01101 111 1111 rd:4 1111 1011 rm:4
 
+# ADC/SBC various forms
+ADC_imm A1 cond:4 0010101 s:1 rn:4 rd:4 imm:12
+ADC_reg A1 cond:4 0000101 s:1 rn:4 rd:4 imm:5 type:2 0 rm:4
+ADC_rsr A1 cond:4 0000101 s:1 rn:4 rd:4 rs:4 0 type:2 1 rm:4
+
+SBC_imm A1 cond:4 0010110 s:1 rn:4 rd:4 imm:12
+SBC_reg A1 cond:4 0000110 s:1 rn:4 rd:4 imm:5 type:2 0 rm:4
+SBC_rsr A1 cond:4 0000110 s:1 rn:4 rd:4 rs:4 0 type:2 1 rm:4
+
 # vector duplicate (reg)
 # b:e == 11 UNDEF
 VDUP A1a cond:4 1110 1 b 1 0 vd:3 0 rt:4 1011 d 0 e 1 0000 { ($b == 0) || ($e == 0); }
