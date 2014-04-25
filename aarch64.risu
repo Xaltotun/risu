@@ -2100,37 +2100,68 @@ SQDMLSL_S3D A64_V 0 1 U 11110 size:2 1 rm:5 1011 00 rn:5 rd:5
 SQDMULL_S3D A64_V 0 1 U 11110 size:2 1 rm:5 1101 00 rn:5 rd:5
 
 # C3.6.11 AdvSIMD scalar three same
-SQADD A64_V   01 0 11110 size:2 1 rm:5 00001 1 rn:5 rd:5
-SQSUB A64_V   01 0 11110 size:2 1 rm:5 00101 1 rn:5 rd:5
-CMGT  A64_V   01 0 11110 size:2 1 rm:5 00110 1 rn:5 rd:5
-CMGE  A64_V   01 0 11110 size:2 1 rm:5 00111 1 rn:5 rd:5
-SSHL  A64_V   01 0 11110 size:2 1 rm:5 01000 1 rn:5 rd:5
-SQSHL A64_V   01 0 11110 size:2 1 rm:5 01001 1 rn:5 rd:5
-SRSHL A64_V   01 0 11110 size:2 1 rm:5 01011 1 rn:5 rd:5
-ADD   A64_V   01 0 11110 size:2 1 rm:5 10000 1 rn:5 rd:5
-CMTST A64_V   01 0 11110 size:2 1 rm:5 10001 1 rn:5 rd:5
-SQDMULH A64_V 01 0 11110 size:2 1 rm:5 10110 1 rn:5 rd:5
+# 31 30 29 28 27 26 25 24 23 22 21 20    16 15      11 10  9    5   4    0
+#  0  1 U   1  1  1  1  0  size  1 [  Rm  ] [ opcode ]  1 [  Rn  ] [  Rd  ]
+#
+SQADD    A64_V   01 0 11110 size:2 1 rm:5 00001 1 rn:5 rd:5
+SQSUB    A64_V   01 0 11110 size:2 1 rm:5 00101 1 rn:5 rd:5
+CMGT     A64_V   01 0 11110 size:2 1 rm:5 00110 1 rn:5 rd:5
+CMGE     A64_V   01 0 11110 size:2 1 rm:5 00111 1 rn:5 rd:5
+SSHL     A64_V   01 0 11110 size:2 1 rm:5 01000 1 rn:5 rd:5
+SQSHL    A64_V   01 0 11110 size:2 1 rm:5 01001 1 rn:5 rd:5
+ADDsv    A64_V   01 0 11110 11     1 rm:5 10000 1 rn:5 rd:5
+ADDsv_res A64_V   01 0 11110 size:2 1 rm:5 10000 1 rn:5 rd:5 \
+!constraints { $size != 11; }
 
-UQADD A64_V   01 1 11110 size:2 1 rm:5 00001 1 rn:5 rd:5
-UQSUB A64_V   01 1 11110 size:2 1 rm:5 00101 1 rn:5 rd:5
-CMHI  A64_V   01 1 11110 size:2 1 rm:5 00110 1 rn:5 rd:5
-CMHS  A64_V   01 1 11110 size:2 1 rm:5 00111 1 rn:5 rd:5
-USHL  A64_V   01 1 11110 size:2 1 rm:5 01000 1 rn:5 rd:5
-UQSHL A64_V   01 1 11110 size:2 1 rm:5 01001 1 rn:5 rd:5
-URSHL A64_V   01 1 11110 size:2 1 rm:5 01011 1 rn:5 rd:5
-SUB   A64_V   01 1 11110 size:2 1 rm:5 10000 1 rn:5 rd:5
-CMEQ  A64_V   01 1 11110 size:2 1 rm:5 10001 1 rn:5 rd:5
-SQRDMULH A64_V 01 1 11110 size:2 1 rm:5 10110 1 rn:5 rd:5
+CMTST    A64_V   01 0 11110 size:2 1 rm:5 10001 1 rn:5 rd:5
+SQDMULH  A64_V   01 0 11110 size:2 1 rm:5 10110 1 rn:5 rd:5
+FMULX    A64_V   01 0 11110 0 size:1 1 rm:5 11011 1 rn:5 rd:5
+FCMEQ    A64_V   01 0 11110 0 size:1 1 rm:5 11100 1 rn:5 rd:5
+FRECPS   A64_V   01 0 11110 0 size:1 1 rm:5 11111 1 rn:5 rd:5
+FRSQRTS  A64_V   01 0 11110 1 size:1 1 rm:5 11111 1 rn:5 rd:5
+UQADD    A64_V   01 1 11110 size:2 1 rm:5 00001 1 rn:5 rd:5
+UQSUB    A64_V   01 1 11110 size:2 1 rm:5 00101 1 rn:5 rd:5
+CMHI     A64_V   01 1 11110 size:2 1 rm:5 00110 1 rn:5 rd:5
+CMHS     A64_V   01 1 11110 size:2 1 rm:5 00111 1 rn:5 rd:5
+USHL     A64_V   01 1 11110 size:2 1 rm:5 01000 1 rn:5 rd:5
+UQSHL    A64_V   01 1 11110 size:2 1 rm:5 01001 1 rn:5 rd:5
+URSHL    A64_V   01 1 11110 size:2 1 rm:5 01010 1 rn:5 rd:5
+UQRSHL   A64_V   01 1 11110 size:2 1 rm:5 01011 1 rn:5 rd:5
+SUBsv    A64_V   01 1 11110 size:2 1 rm:5 10000 1 rn:5 rd:5
+SUBsv_RES A64_V   01 1 11110 size:2 1 rm:5 10000 1 rn:5 rd:5 \
+!constraints { $size != 11; }
 
-FMULX A64_V   01 0 11110 0 size 1 rm:5 11011 1 rn:5 rd:5
-FCMEQ A64_V   01 0 11110 0 size 1 rm:5 11100 1 rn:5 rd:5
-FRECPS A64_V  01 0 11110 0 size 1 rm:5 11111 1 rn:5 rd:5
-FRSQRTS A64_V 01 0 11110 1 size 1 rm:5 11111 1 rn:5 rd:5
-FCMGE A64_V   01 1 11110 0 size 1 rm:5 11100 1 rn:5 rd:5
-FACGE A64_V   01 1 11110 0 size 1 rm:5 11101 1 rn:5 rd:5
-FABD A64_V    01 1 11110 1 size 1 rm:5 11010 1 rn:5 rd:5
-FCMGT A64_V   01 1 11110 1 size 1 rm:5 11100 1 rn:5 rd:5
-FACGT A64_V   01 1 11110 1 size 1 rm:5 11101 1 rn:5 rd:5
+CMEQ     A64_V   01 1 11110 size:2 1 rm:5 10001 1 rn:5 rd:5
+SQRDMULH A64_V   01 1 11110 size:2 1 rm:5 10110 1 rn:5 rd:5
+FCMGE    A64_V   01 1 11110 0 size:1 1 rm:5 11100 1 rn:5 rd:5
+FACGE    A64_V   01 1 11110 0 size:1 1 rm:5 11101 1 rn:5 rd:5
+FABD     A64_V   01 1 11110 1 size:1 1 rm:5 11010 1 rn:5 rd:5
+FCMGT    A64_V   01 1 11110 1 size:1 1 rm:5 11100 1 rn:5 rd:5
+FACGT    A64_V   01 1 11110 1 size:1 1 rm:5 11101 1 rn:5 rd:5 \
+!constraints { $size != 11; }
+
+CMTST    A64_v   01 0 11110 size:2 1 rm:5 10001 1 rn:5 rd:5
+SQDMULH  A64_v   01 0 11110 size:2 1 rm:5 10110 1 rn:5 rd:5
+FMULX    A64_v   01 0 11110 0 size:1 1 rm:5 11011 1 rn:5 rd:5
+FCMEQ    A64_v   01 0 11110 0 size:1 1 rm:5 11100 1 rn:5 rd:5
+FRECPS   A64_v   01 0 11110 0 size:1 1 rm:5 11111 1 rn:5 rd:5
+FRSQRTS  A64_v   01 0 11110 1 size:1 1 rm:5 11111 1 rn:5 rd:5
+UQADD    A64_v   01 1 11110 size:2 1 rm:5 00001 1 rn:5 rd:5
+UQSUB    A64_v   01 1 11110 size:2 1 rm:5 00101 1 rn:5 rd:5
+CMHI     A64_v   01 1 11110 size:2 1 rm:5 00110 1 rn:5 rd:5
+CMHS     A64_v   01 1 11110 size:2 1 rm:5 00111 1 rn:5 rd:5
+USHL     A64_v   01 1 11110 size:2 1 rm:5 01000 1 rn:5 rd:5
+UQSHL    A64_v   01 1 11110 size:2 1 rm:5 01001 1 rn:5 rd:5
+URSHL    A64_v   01 1 11110 size:2 1 rm:5 01010 1 rn:5 rd:5
+UQRSHL   A64_v   01 1 11110 size:2 1 rm:5 01011 1 rn:5 rd:5
+SUBv     A64_v   01 1 11110 size:2 1 rm:5 10000 1 rn:5 rd:5
+CMEQ     A64_v   01 1 11110 size:2 1 rm:5 10001 1 rn:5 rd:5
+SQRDMULH A64_v   01 1 11110 size:2 1 rm:5 10110 1 rn:5 rd:5
+FCMGE    A64_v   01 1 11110 0 size:1 1 rm:5 11100 1 rn:5 rd:5
+FACGE    A64_v   01 1 11110 0 size:1 1 rm:5 11101 1 rn:5 rd:5
+FABD     A64_v   01 1 11110 1 size:1 1 rm:5 11010 1 rn:5 rd:5
+FCMGT    A64_v   01 1 11110 1 size:1 1 rm:5 11100 1 rn:5 rd:5
+FACGT    A64_v   01 1 11110 1 size:1 1 rm:5 11101 1 rn:5 rd:5
 
 # C3.6.12 AdvSIMD scalar 2reg misc
 CMGTzero A64_V      01 0 11110 size:2 10000 01000 10 rn:5 rd:5
