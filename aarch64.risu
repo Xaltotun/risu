@@ -1792,15 +1792,9 @@ LSRV A64 sf:1 00 11010110 rm:5 001001 rn:5 rd:5
 ASRV A64 sf:1 00 11010110 rm:5 001010 rn:5 rd:5
 RORV A64 sf:1 00 11010110 rm:5 001011 rn:5 rd:5
 
-# CRC32 availability is implementation-defined, commented out for now
-#CRC32B A64 0 00 11010110 rm:5 010000 rn:5 rd:5
-#CRC32H A64 0 00 11010110 rm:5 010001 rn:5 rd:5
-#CRC32W A64 0 00 11010110 rm:5 010010 rn:5 rd:5
-#CRC32CB A64 0 00 11010110 rm:5 010100 rn:5 rd:5
-#CRC32CH A64 0 00 11010110 rm:5 010101 rn:5 rd:5
-#CRC32CW A64 0 00 11010110 rm:5 010110 rn:5 rd:5
-#CRC32X A64 1 00 11010110 rm:5 010011 rn:5 rd:5
-#CRC32CX A64 1 00 11010110 rm:5 010111 rn:5 rd:5
+# CRC32 availability is implementation-defined
+CRC32 A64 sf 00 11010110 rm:5 010 0 sz:2 rn:5 rd:5
+CRC32C A64 sf 00 11010110 rm:5 010 1 sz:2 rn:5 rd:5
 
 # C3.5.9 Data-processing (3 source)
 # 31 |30 29| 28 27 26 25 24 |23    21|20    16 15 14    10 9    5 4    0
@@ -1903,7 +1897,7 @@ BICS_RES A64 0 11 01010 shft:2 1 rm:5 1 imm:5 rn:5 rd:5
 # 1a59c:       6e0e72f9        .inst   0x6e0e72f9 ; undefined [XXX]
 
 EXT A64_V 0 Q:1 101110000 rm:5 0 imm:4 0 rn:5 rd:5 \
-!constraints { !($imm & 0x08); }
+!constraints { $Q == 0 || !($imm & 0x08); }
 
 # C3.6.2 AdvSIMD TBL/TBX
 # 31 30 29 28 27 26 25 24 23 22 21 20  16 15 14 13 12 11 10 9  5 4  0
@@ -2064,6 +2058,333 @@ FMOViv_RES A64_V 0 0 1 0111100000 abc:3 1111 01 defgh:5 rd:5
 
 BICiv A64_V 0 Q:1 1 0111100000 abc:3 cm:4 01 defgh:5 rd:5 \
 !constraints { $cm <= 11 && ($cm % 2) == 1; }
+
+# C3.6.7 AdvSIMD scalar copy
+# Includes just one instruction (DUP element); this pattern includes
+# all the reserved stuff for bad imm4 and op values
+DUPes A64_V 0 1 op 1111 0000 imm5:5 0 imm4:4 1 rn:5 rd:5
+
+# C3.6.8 AdvSIMD scalar pairwise
+# Includes all ops and reserved patterns
+SCALARPAIR A64_V 0 1 U 11110 size:2 11000 opcode:5 10 rn:5 rd:5
+
+# C3.6.9 scalar shift immediate
+# I bet Alex has better coverage here
+SCVTF_SSI A64_V 0 1 0 111110 immh:4 immb:3 11100 1 rn:5 rd:5 !constraints { $immh != 0; }
+UCVTF_SSI A64_V 0 1 1 111110 immh:4 immb:3 11100 1 rn:5 rd:5 !constraints { $immh != 0; }
+FCVTZS_SSI A64_V 0 1 0 111110 immh:4 immb:3 11111 1 rn:5 rd:5 !constraints { $immh != 0; }
+FCVTZU_SSI A64_V 0 1 1 111110 immh:4 immb:3 11111 1 rn:5 rd:5 !constraints { $immh != 0; }
+
+SQSHL_SSI A64_V 0 1 0 111110 immh:4 immb:3 01110 1 rn:5 rd:5 !constraints { $immh != 0; }
+UQSHL_SSI A64_V 0 1 1 111110 immh:4 immb:3 01110 1 rn:5 rd:5 !constraints { $immh != 0; }
+SQSHRN_SSI A64_V 0 1 0 111110 immh:4 immb:3 10010 1 rn:5 rd:5 !constraints { $immh != 0; }
+UQSHRN_SSI A64_V 0 1 1 111110 immh:4 immb:3 10010 1 rn:5 rd:5 !constraints { $immh != 0; }
+SQRSHRN_SSI A64_V 0 1 0 111110 immh:4 immb:3 10011 1 rn:5 rd:5 !constraints { $immh != 0; }
+UQRSHRN_SSI A64_V 0 1 1 111110 immh:4 immb:3 10011 1 rn:5 rd:5 !constraints { $immh != 0; }
+SRI_SSI A64_V 0 1 1 111110 immh:4 immb:3 01000 1 rn:5 rd:5 !constraints { $immh != 0; }
+SQSHLU_SSI A64_V 0 1 1 111110 immh:4 immb:3 01100 1 rn:5 rd:5 !constraints { $immh != 0; }
+SQSHRUN_SSI A64_V 0 1 1 111110 immh:4 immb:3 10000 1 rn:5 rd:5 !constraints { $immh != 0; }
+SQRSHRUN_SSI A64_V 0 1 1 111110 immh:4 immb:3 10001 1 rn:5 rd:5 !constraints { $immh != 0; }
+
+# C3.6.10 AdvSIMD scalar three different
+# Complete coverage.
+SQDMLAL_S3D A64_V 0 1 U 11110 size:2 1 rm:5 1001 00 rn:5 rd:5
+SQDMLSL_S3D A64_V 0 1 U 11110 size:2 1 rm:5 1011 00 rn:5 rd:5
+SQDMULL_S3D A64_V 0 1 U 11110 size:2 1 rm:5 1101 00 rn:5 rd:5
+
+# C3.6.11 AdvSIMD scalar three same
+SQADD A64_V   01 0 11110 size:2 1 rm:5 00001 1 rn:5 rd:5
+SQSUB A64_V   01 0 11110 size:2 1 rm:5 00101 1 rn:5 rd:5
+CMGT  A64_V   01 0 11110 size:2 1 rm:5 00110 1 rn:5 rd:5
+CMGE  A64_V   01 0 11110 size:2 1 rm:5 00111 1 rn:5 rd:5
+SSHL  A64_V   01 0 11110 size:2 1 rm:5 01000 1 rn:5 rd:5
+SQSHL A64_V   01 0 11110 size:2 1 rm:5 01001 1 rn:5 rd:5
+SRSHL A64_V   01 0 11110 size:2 1 rm:5 01011 1 rn:5 rd:5
+ADD   A64_V   01 0 11110 size:2 1 rm:5 10000 1 rn:5 rd:5
+CMTST A64_V   01 0 11110 size:2 1 rm:5 10001 1 rn:5 rd:5
+SQDMULH A64_V 01 0 11110 size:2 1 rm:5 10110 1 rn:5 rd:5
+
+UQADD A64_V   01 1 11110 size:2 1 rm:5 00001 1 rn:5 rd:5
+UQSUB A64_V   01 1 11110 size:2 1 rm:5 00101 1 rn:5 rd:5
+CMHI  A64_V   01 1 11110 size:2 1 rm:5 00110 1 rn:5 rd:5
+CMHS  A64_V   01 1 11110 size:2 1 rm:5 00111 1 rn:5 rd:5
+USHL  A64_V   01 1 11110 size:2 1 rm:5 01000 1 rn:5 rd:5
+UQSHL A64_V   01 1 11110 size:2 1 rm:5 01001 1 rn:5 rd:5
+URSHL A64_V   01 1 11110 size:2 1 rm:5 01011 1 rn:5 rd:5
+SUB   A64_V   01 1 11110 size:2 1 rm:5 10000 1 rn:5 rd:5
+CMEQ  A64_V   01 1 11110 size:2 1 rm:5 10001 1 rn:5 rd:5
+SQRDMULH A64_V 01 1 11110 size:2 1 rm:5 10110 1 rn:5 rd:5
+
+FMULX A64_V   01 0 11110 0 size 1 rm:5 11011 1 rn:5 rd:5
+FCMEQ A64_V   01 0 11110 0 size 1 rm:5 11100 1 rn:5 rd:5
+FRECPS A64_V  01 0 11110 0 size 1 rm:5 11111 1 rn:5 rd:5
+FRSQRTS A64_V 01 0 11110 1 size 1 rm:5 11111 1 rn:5 rd:5
+FCMGE A64_V   01 1 11110 0 size 1 rm:5 11100 1 rn:5 rd:5
+FACGE A64_V   01 1 11110 0 size 1 rm:5 11101 1 rn:5 rd:5
+FABD A64_V    01 1 11110 1 size 1 rm:5 11010 1 rn:5 rd:5
+FCMGT A64_V   01 1 11110 1 size 1 rm:5 11100 1 rn:5 rd:5
+FACGT A64_V   01 1 11110 1 size 1 rm:5 11101 1 rn:5 rd:5
+
+# C3.6.12 AdvSIMD scalar 2reg misc
+CMGTzero A64_V      01 0 11110 size:2 10000 01000 10 rn:5 rd:5
+CMGEzero A64_V      01 1 11110 size:2 10000 01000 10 rn:5 rd:5
+CMEQzero A64_V      01 0 11110 size:2 10000 01001 10 rn:5 rd:5
+CMLEzero A64_V      01 1 11110 size:2 10000 01001 10 rn:5 rd:5
+CMLTzero A64_V      01 0 11110 size:2 10000 01010 10 rn:5 rd:5
+ABS A64_V           01 0 11110 size:2 10000 01011 10 rn:5 rd:5
+NEG A64_V           01 1 11110 size:2 10000 01011 10 rn:5 rd:5
+
+FCMGT_S2MISC A64_V  01 0 11110 size:2 10000 01100 10 rn:5 rd:5
+FCMEQ_S2MISC A64_V  01 0 11110 size:2 10000 01101 10 rn:5 rd:5
+FCMLT_S2MISC A64_V  01 0 11110 size:2 10000 01110 10 rn:5 rd:5
+FCMGE_S2MISC A64_V  01 1 11110 size:2 10000 01100 10 rn:5 rd:5
+FCMLE_S2MISC A64_V  01 1 11110 size:2 10000 01101 10 rn:5 rd:5
+
+SCVTF_S2MISC A64_V 01 0 11110 0 sz 10000 11101 10 rn:5 rd:5
+UCVTF_S2MISC A64_V 01 1 11110 0 sz 10000 11101 10 rn:5 rd:5
+
+FCVTNS_S2MISC A64_V 01 0 11110 0 sz 10000 11010 10 rn:5 rd:5
+FCVTMS_S2MISC A64_V 01 0 11110 0 sz 10000 11011 10 rn:5 rd:5
+FCVTAS_S2MISC A64_V 01 0 11110 0 sz 10000 11100 10 rn:5 rd:5
+FCVTPS_S2MISC A64_V 01 0 11110 1 sz 10000 11010 10 rn:5 rd:5
+FCVTZS_S2MISC A64_V 01 0 11110 1 sz 10000 11011 10 rn:5 rd:5
+
+FCVTNU_S2MISC A64_V 01 1 11110 0 sz 10000 11010 10 rn:5 rd:5
+FCVTMU_S2MISC A64_V 01 1 11110 0 sz 10000 11011 10 rn:5 rd:5
+FCVTAU_S2MISC A64_V 01 1 11110 0 sz 10000 11100 10 rn:5 rd:5
+FCVTPU_S2MISC A64_V 01 1 11110 1 sz 10000 11010 10 rn:5 rd:5
+FCVTZU_S2MISC A64_V 01 1 11110 1 sz 10000 11011 10 rn:5 rd:5
+
+FCVTXN_S2MISC A64_V 01 1 11110 0 sz 10000 10110 10 rn:5 rd:5
+
+SUQADD_S2MISC A64_V 01 0 11110 size:2 10000 00011 10 rn:5 rd:5
+USQADD_S2MISC A64_V 01 1 11110 size:2 10000 00011 10 rn:5 rd:5
+SQABS_S2MISC A64_V 01 0 11110 size:2 10000 00111 10 rn:5 rd:5
+SQNEG_S2MISC A64_V 01 1 11110 size:2 10000 00111 10 rn:5 rd:5
+
+# XXX lots of others in this group
+
+# C3.6.13 AdvSIMD scalar x indexed element
+# Complete coverage.
+
+# Long ops
+SQDMLAL_SIDX A64_V 0 1 U 11111 sz:2 l m rm:4 0011 h 0 rn:5 rd:5
+SQDMLSL_SIDX A64_V 0 1 U 11111 sz:2 l m rm:4 0111 h 0 rn:5 rd:5
+SQDMULL_SIDX A64_V 0 1 U 11111 sz:2 l m rm:4 1011 h 0 rn:5 rd:5
+
+# Not long:
+SQDMULH_SIDX A64_V 0 1 U 11111 sz:2 l m rm:4 1100 h 0 rn:5 rd:5
+SQRDMULH_SIDX A64_V 0 1 U 11111 sz:2 l m rm:4 1101 h 0 rn:5 rd:5
+FMLA_SIDX A64_V 0 1 U 11111 sz:2 l m rm:4 0001 h 0 rn:5 rd:5
+FMLS_SIDX A64_V 0 1 U 11111 sz:2 l m rm:4 0101 h 0 rn:5 rd:5
+FMUL_FMULX_SIDX A64_V 0 1 U 11111 sz:2 l m rm:4 1001 h 0 rn:5 rd:5
+
+# C3.6.14 AdvSIMD shift by immediate
+# Alex probably has more here
+# XXX these don't have the immh != 0 constraint...
+SQSHRN_SI A64_V 0 Q 0 011110 immh:4 immb:3 10010 1 rn:5 rd:5 !constraints { $immh != 0; }
+SQRSHRN_SI A64_V 0 Q 0 011110 immh:4 immb:3 10011 1 rn:5 rd:5 !constraints { $immh != 0; }
+SQSHRUN_SI A64_V 0 Q 1 011110 immh:4 immb:3 10000 1 rn:5 rd:5 !constraints { $immh != 0; }
+SQRSHRUN_SI A64_V 0 Q 1 011110 immh:4 immb:3 10001 1 rn:5 rd:5 !constraints { $immh != 0; }
+UQSHRN_SI A64_V 0 Q 1 011110 immh:4 immb:3 10010 1 rn:5 rd:5 !constraints { $immh != 0; }
+UQRSHRN_SI A64_V 0 Q 1 011110 immh:4 immb:3 10011 1 rn:5 rd:5 !constraints { $immh != 0; }
+
+SRI_SI A64_V 0 Q 1 011110 immh:4 immb:3 01000 1 rn:5 rd:5 !constraints { $immh != 0; }
+
+SQSHL_SI A64_V 0 Q 0 011110 immh:4 immb:3 01110 1 rn:5 rd:5 !constraints { $immh != 0; }
+UQSHL_SI A64_V 0 Q 1 011110 immh:4 immb:3 01110 1 rn:5 rd:5 !constraints { $immh != 0; }
+SQSHLU_SI A64_V 0 Q 1 011110 immh:4 immb:3 01100 1 rn:5 rd:5 !constraints { $immh != 0; }
+
+FCVTZS_SI A64_V 0 Q 0 011110 immh:4 immb:3 11111 1 rn:5 rd:5 !constraints { $immh != 0; }
+FCVTZU_SI A64_V 0 Q 1 011110 immh:4 immb:3 11111 1 rn:5 rd:5 !constraints { $immh != 0; } 
+
+# C3.6.15 AdvSIMD three different
+# the '2' variants are included in the main patterns here
+SADDL A64_V   0 Q 0 0 1 1 1 0 size:2 1 rm:5 0000 00 rn:5 rd:5
+SADDW A64_V   0 Q 0 0 1 1 1 0 size:2 1 rm:5 0001 00 rn:5 rd:5
+SSUBL A64_V   0 Q 0 0 1 1 1 0 size:2 1 rm:5 0010 00 rn:5 rd:5
+SSUBW A64_V   0 Q 0 0 1 1 1 0 size:2 1 rm:5 0011 00 rn:5 rd:5
+ADDHN A64_V   0 Q 0 0 1 1 1 0 size:2 1 rm:5 0100 00 rn:5 rd:5
+SABAL A64_V   0 Q 0 0 1 1 1 0 size:2 1 rm:5 0101 00 rn:5 rd:5
+SUBHN A64_V   0 Q 0 0 1 1 1 0 size:2 1 rm:5 0110 00 rn:5 rd:5
+SABDL A64_V   0 Q 0 0 1 1 1 0 size:2 1 rm:5 0111 00 rn:5 rd:5
+SMLAL A64_V   0 Q 0 0 1 1 1 0 size:2 1 rm:5 1000 00 rn:5 rd:5
+SQDMLAL A64_V 0 Q 0 0 1 1 1 0 size:2 1 rm:5 1001 00 rn:5 rd:5
+SMLSL A64_V   0 Q 0 0 1 1 1 0 size:2 1 rm:5 1010 00 rn:5 rd:5
+SQDMLSL A64_V 0 Q 0 0 1 1 1 0 size:2 1 rm:5 1011 00 rn:5 rd:5
+SMULL A64_V   0 Q 0 0 1 1 1 0 size:2 1 rm:5 1100 00 rn:5 rd:5
+SQDMULL A64_V 0 Q 0 0 1 1 1 0 size:2 1 rm:5 1101 00 rn:5 rd:5
+PMULL A64_V   0 Q 0 0 1 1 1 0 size:2 1 rm:5 1110 00 rn:5 rd:5
+
+UADDL A64_V 0 Q 1 0 1 1 1 0 size:2 1 rm:5 0000 00 rn:5 rd:5
+UADDW A64_V 0 Q 1 0 1 1 1 0 size:2 1 rm:5 0001 00 rn:5 rd:5
+USUBL A64_V 0 Q 1 0 1 1 1 0 size:2 1 rm:5 0010 00 rn:5 rd:5
+USUBW A64_V 0 Q 1 0 1 1 1 0 size:2 1 rm:5 0011 00 rn:5 rd:5
+RADDHN A64_V 0 Q 1 0 1 1 1 0 size:2 1 rm:5 0100 00 rn:5 rd:5
+UABAL A64_V 0 Q 1 0 1 1 1 0 size:2 1 rm:5 0101 00 rn:5 rd:5
+RSUBHN A64_V 0 Q 1 0 1 1 1 0 size:2 1 rm:5 0110 00 rn:5 rd:5
+UABDL A64_V 0 Q 1 0 1 1 1 0 size:2 1 rm:5 0111 00 rn:5 rd:5
+UMLAL A64_V 0 Q 1 0 1 1 1 0 size:2 1 rm:5 1000 00 rn:5 rd:5
+UMLSL A64_V 0 Q 1 0 1 1 1 0 size:2 1 rm:5 1010 00 rn:5 rd:5
+UMULL A64_V 0 Q 1 0 1 1 1 0 size:2 1 rm:5 1100 00 rn:5 rd:5
+
+# these don't have U=1 variants
+PMULL_RES A64_V 0 Q 1 0 1 1 1 0 size:2 1 rm:5 1110 00 rn:5 rd:5
+SQDMLAL_RES A64_V 0 Q 1 0 1 1 1 0 size:2 1 rm:5 1001 00 rn:5 rd:5
+SQDMLSL_RES A64_V 0 Q 1 0 1 1 1 0 size:2 1 rm:5 1011 00 rn:5 rd:5
+SQDMULL_RES A64_V 0 Q 1 0 1 1 1 0 size:2 1 rm:5 1101 00 rn:5 rd:5
+# opcode 1111 unallocated
+SIMD_3D_RES A64_V 0 Q U 0 1 1 1 0 size:2 1 rm:5 1111 00 rn:5 rd:5
+
+# C3.6.16 AdvSIMD 3 same
+# XXX should really split this out
+3SAME_LOGIC A64_V 0 Q U 01110 size:2 1 rm:5 00011 1 rn:5 rd:5
+CMGT_3SAME A64_V 0 Q 0 01110 size:2 1 rm:5 00110 1 rn:5 rd:5
+CMGE_3SAME A64_V 0 Q 0 01110 size:2 1 rm:5 00111 1 rn:5 rd:5
+CMTST_3SAME A64_V 0 Q 0 01110 size:2 1 rm:5 10001 1 rn:5 rd:5
+ADD_3SAME A64_V 0 Q 0 01110 size:2 1 rm:5 10000 1 rn:5 rd:5
+
+# these include the unsigned versions
+HADD_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 00000 1 rn:5 rd:5
+QADD_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 00001 1 rn:5 rd:5
+RHADD_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 00010 1 rn:5 rd:5
+HSUB_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 00100 1 rn:5 rd:5
+QSUB_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 00101 1 rn:5 rd:5
+SHL_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 01000 1 rn:5 rd:5
+QSHL_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 01001 1 rn:5 rd:5
+RSHL_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 01010 1 rn:5 rd:5
+QRSHL_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 01011 1 rn:5 rd:5
+MAX_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 01100 1 rn:5 rd:5
+MIN_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 01101 1 rn:5 rd:5
+ABD_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 01110 1 rn:5 rd:5
+ABA_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 01111 1 rn:5 rd:5
+MAXP_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 10100 1 rn:5 rd:5
+MINP_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 10101 1 rn:5 rd:5
+
+SQDMULH_3SAME A64_V 0 Q 0 01110 size:2 1 rm:5 10110 1 rn:5 rd:5
+ADDP_3SAME A64_V 0 Q 0 01110 size:2 1 rm:5 10111 1 rn:5 rd:5
+SQRDMULH_3SAME A64_V 0 Q 1 01110 size:2 1 rm:5 10110 1 rn:5 rd:5
+
+MLA_3SAME A64_V 0 Q 0 01110 size:2 1 rm:5 10010 1 rn:5 rd:5
+MUL_3SAME A64_V 0 Q 0 01110 size:2 1 rm:5 10011 1 rn:5 rd:5
+MLS_3SAME A64_V 0 Q 1 01110 size:2 1 rm:5 10010 1 rn:5 rd:5
+PMUL_3SAME A64_V 0 Q 1 01110 size:2 1 rm:5 10011 1 rn:5 rd:5
+
+CMHI_3SAME A64_V 0 Q 1 01110 size:2 1 rm:5 00110 1 rn:5 rd:5
+CMHS_3SAME A64_V 0 Q 1 01110 size:2 1 rm:5 00111 1 rn:5 rd:5
+CMEQ_3SAME A64_V 0 Q 1 01110 size:2 1 rm:5 10001 1 rn:5 rd:5
+SUB_3SAME A64_V 0 Q 1 01110 size:2 1 rm:5 10000 1 rn:5 rd:5
+
+# FP 3-same ops (these are complete)
+FMAXNM_3SAME A64_V 0 Q 0 01110 0 size 1 rm:5 11000 1 rn:5 rd:5
+FMLA_3SAME A64_V   0 Q 0 01110 0 size 1 rm:5 11001 1 rn:5 rd:5
+FADD_3SAME A64_V   0 Q 0 01110 0 size 1 rm:5 11010 1 rn:5 rd:5
+FMULX_3SAME A64_V  0 Q 0 01110 0 size 1 rm:5 11011 1 rn:5 rd:5
+FCMEQ_3SAME A64_V  0 Q 0 01110 0 size 1 rm:5 11100 1 rn:5 rd:5
+FMAX_3SAME A64_V   0 Q 0 01110 0 size 1 rm:5 11110 1 rn:5 rd:5
+FRECPS_3SAME A64_V 0 Q 0 01110 0 size 1 rm:5 11111 1 rn:5 rd:5
+
+FMINNM_3SAME A64_V   0 Q 0 01110 1 size 1 rm:5 11000 1 rn:5 rd:5
+FMLS_3SAME A64_V     0 Q 0 01110 1 size 1 rm:5 11001 1 rn:5 rd:5
+FSUB_3SAME A64_V     0 Q 0 01110 1 size 1 rm:5 11010 1 rn:5 rd:5
+FMIN_3SAME A64_V     0 Q 0 01110 1 size 1 rm:5 11110 1 rn:5 rd:5
+FRSQRTS_3SAME A64_V  0 Q 0 01110 1 size 1 rm:5 11111 1 rn:5 rd:5
+
+FMAXNMP_3SAME A64_V 0 Q 1 01110 0 size 1 rm:5 11000 1 rn:5 rd:5
+FADDP_3SAME A64_V   0 Q 1 01110 0 size 1 rm:5 11010 1 rn:5 rd:5
+FMUL_3SAME A64_V    0 Q 1 01110 0 size 1 rm:5 11011 1 rn:5 rd:5
+FCMGE_3SAME A64_V   0 Q 1 01110 0 size 1 rm:5 11100 1 rn:5 rd:5
+FACGE_3SAME A64_V   0 Q 1 01110 0 size 1 rm:5 11101 1 rn:5 rd:5
+FMAXP_3SAME A64_V   0 Q 1 01110 0 size 1 rm:5 11110 1 rn:5 rd:5
+FDIV_3SAME A64_V    0 Q 1 01110 0 size 1 rm:5 11111 1 rn:5 rd:5
+
+FMINNMP_3SAME A64_V  0 Q 1 01110 1 size 1 rm:5 11000 1 rn:5 rd:5
+FABD_3SAME A64_V     0 Q 1 01110 1 size 1 rm:5 11010 1 rn:5 rd:5
+FCMGT_3SAME A64_V    0 Q 1 01110 1 size 1 rm:5 11100 1 rn:5 rd:5
+FACGT_3SAME A64_V    0 Q 1 01110 1 size 1 rm:5 11101 1 rn:5 rd:5
+FMINP_3SAME A64_V    0 Q 1 01110 1 size 1 rm:5 11110 1 rn:5 rd:5
+
+# C3.6.17 AdvSIMD two-reg misc
+# XXX not complete
+#template A64_V 0 Q U 01110 size:2 10000 op:5 10 rn:5 rd:5
+
+CNT_NOT_RBIT_2MISC A64_V 0 Q U 01110 size:2 10000 00101 10 rn:5 rd:5
+CMGT_CMGE_2MISC A64_V 0 Q U 01110 size:2 10000 01000 10 rn:5 rd:5
+CMEQ_CMLE_2MISC A64_V 0 Q U 01110 size:2 10000 01001 10 rn:5 rd:5
+CMLT_2MISC A64_V 0 Q U 01110 size:2 10000 01010 10 rn:5 rd:5
+ABS_NEG_2MISC A64_V 0 Q U 01110 size:2 10000 01011 10 rn:5 rd:5
+REV_2MISC A64_V 0 Q U 01110 size:2 10000 0000 op 10 rn:5 rd:5
+
+# 2misc narrowing extract ops
+XTN_2MISC A64_V 0 Q 0 01110 size:2 10000 10010 10 rn:5 rd:5
+SQXTUN_2MISC A64_V 0 Q 1 01110 size:2 10000 10010 10 rn:5 rd:5
+SQXTN_2MISC A64_V 0 Q 0 01110 size:2 10000 10100 10 rn:5 rd:5
+UQXTN_2MISC A64_V 0 Q 1 01110 size:2 10000 10100 10 rn:5 rd:5
+
+# a few of the fp ops
+FABS_FNEG_2MISC A64_V 0 Q U 01110 size:2 10000 01111 10 rn:5 rd:5
+
+FCMGT_2MISC A64_V 0 Q 0 01110 size:2 10000 01100 10 rn:5 rd:5
+FCMEQ_2MISC A64_V 0 Q 0 01110 size:2 10000 01110 10 rn:5 rd:5
+FCMLT_2MISC A64_V 0 Q 1 01110 size:2 10000 01100 10 rn:5 rd:5
+FCMGE_2MISC A64_V 0 Q 1 01110 size:2 10000 01101 10 rn:5 rd:5
+FCMLE_2MISC A64_V 0 Q 1 01110 size:2 10000 01101 10 rn:5 rd:5
+
+# SADDLP/UADDLP, SADALP, UADALP
+ADDLP_2MISC A64_V 0 Q U 01110 size:2 10000 00010 10 rn:5 rd:5
+ADALP_2MISC A64_V 0 Q U 01110 size:2 10000 00110 10 rn:5 rd:5
+
+SHLL_2MISC A64_V 0 Q 1 01110 size:2 10000 10011 10 rn:5 rd:5
+
+FCVTNS_2MISC A64_V 0 Q 0 01110 0 sz 10000 11010 10 rn:5 rd:5
+FCVTMS_2MISC A64_V 0 Q 0 01110 0 sz 10000 11011 10 rn:5 rd:5
+FCVTAS_2MISC A64_V 0 Q 0 01110 0 sz 10000 11100 10 rn:5 rd:5
+FCVTPS_2MISC A64_V 0 Q 0 01110 1 sz 10000 11010 10 rn:5 rd:5
+FCVTZS_2MISC A64_V 0 Q 0 01110 1 sz 10000 11011 10 rn:5 rd:5
+
+FCVTNU_2MISC A64_V 0 Q 1 01110 0 sz 10000 11010 10 rn:5 rd:5
+FCVTMU_2MISC A64_V 0 Q 1 01110 0 sz 10000 11011 10 rn:5 rd:5
+FCVTAU_2MISC A64_V 0 Q 1 01110 0 sz 10000 11100 10 rn:5 rd:5
+FCVTPU_2MISC A64_V 0 Q 1 01110 1 sz 10000 11010 10 rn:5 rd:5
+FCVTZU_2MISC A64_V 0 Q 1 01110 1 sz 10000 11011 10 rn:5 rd:5
+
+FCVTN_2MISC A64_V 0 Q 0 01110 0 sz 10000 10110 10 rn:5 rd:5
+FCVTL_2MISC A64_V 0 Q 0 01110 0 sz 10000 10111 10 rn:5 rd:5
+FCVTXN_2MISC A64_V 0 Q 1 01110 0 sz 10000 10110 10 rn:5 rd:5
+
+FRINTN_2MISC A64_V 0 Q 0 01110 0 sz 10000 11000 10 rn:5 rd:5
+FRINTM_2MISC A64_V 0 Q 0 01110 0 sz 10000 11001 10 rn:5 rd:5
+FRINTP_2MISC A64_V 0 Q 0 01110 1 sz 10000 11000 10 rn:5 rd:5
+FRINTZ_2MISC A64_V 0 Q 0 01110 1 sz 10000 11001 10 rn:5 rd:5
+FRINTA_2MISC A64_V 0 Q 1 01110 0 sz 10000 11000 10 rn:5 rd:5
+FRINTX_2MISC A64_V 0 Q 1 01110 0 sz 10000 11001 10 rn:5 rd:5
+
+SQABS_2MISC A64_V 0 Q 0 01110 sz:2 10000 00111 10 rn:5 rd:5
+SQNEG_2MISC A64_V 0 Q 1 01110 sz:2 10000 00111 10 rn:5 rd:5
+SUQADD_2MISC A64_V 0 Q 0 01110 sz:2 10000 00011 10 rn:5 rd:5
+USQADD_2MISC A64_V 0 Q 1 01110 sz:2 10000 00011 10 rn:5 rd:5
+
+# C3.6.18 AdvSIMD vector x indexed element
+# Complete coverage. Note we tend to leave in U bit etc which
+# may actually be unallocated encodings.
+
+# Long ops:
+SMLAL_IDX A64_V 0 Q U 01111 sz:2 l m rm:4 0010 h 0 rn:5 rd:5
+SQDMLAL_IDX A64_V 0 Q U 01111 sz:2 l m rm:4 0011 h 0 rn:5 rd:5
+SMLSL_IDX A64_V 0 Q U 01111 sz:2 l m rm:4 0110 h 0 rn:5 rd:5
+SQDMLSL_IDX A64_V 0 Q U 01111 sz:2 l m rm:4 0111 h 0 rn:5 rd:5
+SMULL_IDX A64_V 0 Q U 01111 sz:2 l m rm:4 1010 h 0 rn:5 rd:5
+SQDMULL_IDX A64_V 0 Q U 01111 sz:2 l m rm:4 1011 h 0 rn:5 rd:5
+
+# Not long:
+MUL_IDX A64_V 0 Q U 01111 sz:2 l m rm:4 1000 h 0 rn:5 rd:5
+MLA_IDX A64_V 0 Q U 01111 sz:2 l m rm:4 0000 h 0 rn:5 rd:5
+MLS_IDX A64_V 0 Q U 01111 sz:2 l m rm:4 0100 h 0 rn:5 rd:5
+SQDMULH_IDX A64_V 0 Q U 01111 sz:2 l m rm:4 1100 h 0 rn:5 rd:5
+SQRDMULH_IDX A64_V 0 Q U 01111 sz:2 l m rm:4 1101 h 0 rn:5 rd:5
+FMLA_IDX A64_V 0 Q U 01111 sz:2 l m rm:4 0001 h 0 rn:5 rd:5
+FMLS_IDX A64_V 0 Q U 01111 sz:2 l m rm:4 0101 h 0 rn:5 rd:5
+FMUL_FMULX_IDX A64_V 0 Q U 01111 sz:2 l m rm:4 1001 h 0 rn:5 rd:5
 
 # C3.6.22 Floating-point compare
 # 31 30 29 28 27 26 25 24 23 22 21 20  16 15 14 13 12 11 10 9    5 4       0
