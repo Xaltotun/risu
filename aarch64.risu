@@ -2076,7 +2076,23 @@ DUPes A64_V 0 1 op 1111 0000 imm5:5 0 imm4:4 1 rn:5 rd:5
 SCALARPAIR A64_V 0 1 U 11110 size:2 11000 opcode:5 10 rn:5 rd:5
 
 # C3.6.9 scalar shift immediate
-# I bet Alex has better coverage here
+#
+# 31 30 29 28 27 26 25 24 23 22    19 18    16 15      11 10 9      5 4      0
+#  0  1 U   1  1  1  1  1  0 [ immh ] [ immb ] [ opcode ]  1 [  Rn  ] [  Rd  ]
+
+# Generic defintions to cover all the options
+SHIFTis A64_V  01 U:1 111110 immh:4 immb:3 opcode:5 1 rn:5 rd:5 \
+!constraints { \
+($immh != 0) && \
+($opcode == 0 || $opcode == 2 || $opcode == 4 || $opcode == 6 || $opcode == 10); \
+}
+SHIFTRis A64_V  01 U:1 111110 immh:4 immb:3 opcode:5 1 rn:5 rd:5 \
+!constraints { \
+($immh != 0) && \
+($opcode == 0 || $opcode == 2 || $opcode == 4 || $opcode == 6); \
+}
+
+# Individual instructions
 SCVTF_SSI A64_V 0 1 0 111110 immh:4 immb:3 11100 1 rn:5 rd:5 !constraints { $immh != 0; }
 UCVTF_SSI A64_V 0 1 1 111110 immh:4 immb:3 11100 1 rn:5 rd:5 !constraints { $immh != 0; }
 FCVTZS_SSI A64_V 0 1 0 111110 immh:4 immb:3 11111 1 rn:5 rd:5 !constraints { $immh != 0; }
