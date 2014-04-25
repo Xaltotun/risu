@@ -2218,8 +2218,56 @@ FMLS_SIDX A64_V 0 1 U 11111 sz:2 l m rm:4 0101 h 0 rn:5 rd:5
 FMUL_FMULX_SIDX A64_V 0 1 U 11111 sz:2 l m rm:4 1001 h 0 rn:5 rd:5
 
 # C3.6.14 AdvSIMD shift by immediate
-# Alex probably has more here
-# XXX these don't have the immh != 0 constraint...
+# 31 30 29 28 27 26 25 24 23 22    19 18    16 15      11 10 9      5 4      0
+#  0  Q U   0  1  1  1  1  0 [ immh ] [ immb ] [ opcode ]  1 [  Rn  ] [  Rd  ]
+
+# Generic patterns for all the shift ops we do
+SHIFTiv A64_V  0 Q:1 U:1 011110 immh:4 immb:3 opcode:5 1 rn:5 rd:5 \
+!constraints { \
+($opcode == 0 || $opcode == 2 || $opcode == 4 || $opcode == 6 || $opcode == 10 || $opcode == 20); \
+}
+
+# All the actual ops. Generally the *2 ops have q=1
+SSHRv      A64_V 0 q:1 0 011110 immh:4 immb:3 00000 1 rn:5 rd:5 
+SSRAv      A64_V 0 q:1 0 011110 immh:4 immb:3 00010 1 rn:5 rd:5 
+SRSHRv     A64_V 0 q:1 0 011110 immh:4 immb:3 00100 1 rn:5 rd:5 
+SRSRAv     A64_V 0 q:1 0 011110 immh:4 immb:3 00110 1 rn:5 rd:5 
+SHLv       A64_V 0 q:1 0 011110 immh:4 immb:3 01010 1 rn:5 rd:5 
+SQSHLvi    A64_V 0 q:1 0 011110 immh:4 immb:3 01110 1 rn:5 rd:5 
+SHRN       A64_V 0 q:1 0 011110 immh:4 immb:3 10000 1 rn:5 rd:5 
+SHRN2      A64_V 0 q:1 0 011110 immh:4 immb:3 10000 1 rn:5 rd:5 
+RSHRN      A64_V 0 q:1 0 011110 immh:4 immb:3 10001 1 rn:5 rd:5 
+#RSHRN2     A64_V 0 q:1 0 011110 immh:4 immb:3 10001 1 rn:5 rd:5 
+SQSHRNv    A64_V 0 q:1 0 011110 immh:4 immb:3 10010 1 rn:5 rd:5 
+#SQSHRN2v   A64_V 0 q:1 0 011110 immh:4 immb:3 10010 1 rn:5 rd:5 
+SQRSHRNv   A64_V 0 q:1 0 011110 immh:4 immb:3 10011 1 rn:5 rd:5 
+#SQRSHRN2v  A64_V 0 q:1 0 011110 immh:4 immb:3 10011 1 rn:5 rd:5 
+SSHLL      A64_V 0 q:1 0 011110 immh:4 immb:3 10100 1 rn:5 rd:5 
+SSHLL2     A64_V 0 q:1 0 011110 immh:4 immb:3 10100 1 rn:5 rd:5 
+SCVTFvf    A64_V 0 q:1 0 011110 immh:4 immb:3 11100 1 rn:5 rd:5 
+FCVTZSvf   A64_V 0 q:1 0 011110 immh:4 immb:3 11111 1 rn:5 rd:5 
+USHRv      A64_V 0 q:1 1 011110 immh:4 immb:3 00000 1 rn:5 rd:5 
+USRAv      A64_V 0 q:1 1 011110 immh:4 immb:3 00010 1 rn:5 rd:5 
+URSHRv     A64_V 0 q:1 1 011110 immh:4 immb:3 00100 1 rn:5 rd:5 
+URSRAv     A64_V 0 q:1 1 011110 immh:4 immb:3 00110 1 rn:5 rd:5 
+SRIv       A64_V 0 q:1 1 011110 immh:4 immb:3 01000 1 rn:5 rd:5 
+SLIv       A64_V 0 q:1 1 011110 immh:4 immb:3 01010 1 rn:5 rd:5 
+SQSHLUv    A64_V 0 q:1 1 011110 immh:4 immb:3 01100 1 rn:5 rd:5 
+UQSHLvi    A64_V 0 q:1 1 011110 immh:4 immb:3 01110 1 rn:5 rd:5 
+SQSHRUNv   A64_V 0 q:1 1 011110 immh:4 immb:3 10000 1 rn:5 rd:5 
+#SQSHRUN2v  A64_V 0 q:1 1 011110 immh:4 immb:3 10000 1 rn:5 rd:5 
+SQRSHRUNv  A64_V 0 q:1 1 011110 immh:4 immb:3 10001 1 rn:5 rd:5 
+#SQRSHRUN2v A64_V 0 q:1 1 011110 immh:4 immb:3 10001 1 rn:5 rd:5 
+UQSHRNv    A64_V 0 q:1 1 011110 immh:4 immb:3 10010 1 rn:5 rd:5 
+UQRSHRNv   A64_V 0 q:1 1 011110 immh:4 immb:3 10011 1 rn:5 rd:5 
+#UQRSHRN2v  A64_V 0 q:1 1 011110 immh:4 immb:3 10011 1 rn:5 rd:5 
+USHLL      A64_V 0 q:1 1 011110 immh:4 immb:3 10100 1 rn:5 rd:5 
+USHLL2     A64_V 0 q:1 1 011110 immh:4 immb:3 10100 1 rn:5 rd:5 
+UCVTFvf    A64_V 0 q:1 1 011110 immh:4 immb:3 11100 1 rn:5 rd:5 
+FCVTZUvf   A64_V 0 q:1 1 011110 immh:4 immb:3 11111 1 rn:5 rd:5 
+
+#SCVTFvf_RES1 A64_V 0 Q:1 U:1 01110 immh:4 immb:3 11100 1 rn:5 rd:5
+
 SQSHRN_SI A64_V 0 Q 0 011110 immh:4 immb:3 10010 1 rn:5 rd:5 !constraints { $immh != 0; }
 SQRSHRN_SI A64_V 0 Q 0 011110 immh:4 immb:3 10011 1 rn:5 rd:5 !constraints { $immh != 0; }
 SQSHRUN_SI A64_V 0 Q 1 011110 immh:4 immb:3 10000 1 rn:5 rd:5 !constraints { $immh != 0; }
