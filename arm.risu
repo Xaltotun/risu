@@ -764,3 +764,43 @@ VLDR A1a cond:4 1101 1 d 01 rn:4 vd:4 101 x imm:8 \
 # both A1 and A2 encodings, U = 0
 VLDR A1b cond:4 1101 1 d 01 rn:4 vd:4 101 x imm:8 \
  !memory { reg_minus_imm($rn, $imm * 4); }
+
+
+#####
+# v8 only insns
+# VSEL
+VSEL A1 1111 11100 d cc:2 vn:4 vd:4 101 sz n 0 m 0 vm:4
+# VMINNM and VMAXNM
+# neon
+VMINMAXNM A1 1111 00110 d op sz vn:4 vd:4 1111 n q m 1 vm:4
+# vfp
+VMINMAXNM A2 1111 11101 d 00 vn:4 vd:4 101 sz n op m 0 vm:4
+
+# Crypto
+# AESD, AESE, AESIMC, AESMC
+AESD A1 1111 0011 1 d 11 sz:2 00 vd:4 0011 01 m 0 vm:4
+AESE A1 1111 0011 1 d 11 sz:2 00 vd:4 0011 00 m 0 vm:4
+AESIMC A1 1111 0011 1 d 11 sz:2 00 vd:4 0011 11 m 0 vm:4
+AESMC A1 1111 0011 1 d 11 sz:2 00 vd:4 0011 10 m 0 vm:4
+
+# rounding, VFP: VRINTX, VRINTZ, VRINTR, VRINT[ANPM]
+VRINTX A1 cond:4 11101 d 110111 vd:4 101 sz 0 1 m 0 vm:4
+VRINTZR A1 cond:4 11101 d 110110 vd:4 101 sz op 1 m 0 vm:4
+VRINTANPM A1 1111 11101 d 1110 rmode:2 vd:4 101 sz 0 1 m 0 vm:4
+# rounding, Neon:
+VRINTX_neon A1 1111 00111 d 11 sz:2 10 vd:4 01001 q m 0 vm:4
+VRINTZ_neon A1 1111 00111 d 11 sz:2 10 vd:4 01011 q m 0 vm:4
+VRINTANPM_neon A1 1111 00111 d 11 sz:2 10 vd:4 01 op:3 q m 0 vm:4
+
+# VCVT with rounding mode specified
+VCVT_rm A1 1111 11101 d 1111 rm:2 vd:4 101 sz op 1 m 0 vm:4
+# 64<->16 conversions (see also pattern earlier which is the sz==0 case)
+VCVT_B_TT_64 A1 cond:4 1110 1 d 11 001 op vd:4 101 1 t 1 m 0 vm:4
+
+# VCVT with rounding mode specified, neon
+VCVT_rm_neon A1 1111 00111 d 11 size:2 11 vd:4 00 rm:2 op q m 0 vm:4
+
+# CRC
+# Note that sz == 0b11 is UNPREDICTABLE (either UNDEF, NOP or as if == 0b10)
+# as is cond != 1110 (either UNDEF, NOP, cond-exec or unconditional exec)
+CRC32 A1 1110 00010 sz:2 0 rn:4 rd:4 00 c 0 0100 rm:4 !constraints { $sz != 3; }

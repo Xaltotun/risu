@@ -434,3 +434,6 @@ STR T2 11111 000 0100 rn:4 rt:4 000000 imm:2 rm:4 \
    !memory { reg_plus_reg_shifted($rn, $rm, $imm); }
 
 ##############################################################################
+
+# V8 only instructions
+CRC32 T1 111 1101 011 0 c rn:4 1111 rd:4 10 sz:2 rm:4 !constraints { $sz != 3; }
