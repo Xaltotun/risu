@@ -9,6 +9,24 @@ mode.
 
 risu is also the Japanese word for squirrel.
 
+Building
+--------
+
+risu comes in two parts -- a perl script 'risugen' for generating
+test blobs (which can be run anywhere), and a Linux executable
+'risu' which runs on the target architecture (ie ARM). To
+build the executable part:
+
+    [VAR=VALUE] ... ./configure
+    make
+
+where [VAR=VALUE] ... allows you to specify any options.
+Most useful is
+ CROSS_PREFIX= which specifies the cross compiler prefix; you'll
+   need this if you're not building on the target system
+   (Example: CROSS_PREFIX=arm-linux-gnueabihf- )
+For other possibilities run 'configure --help'.
+
 Usage
 -----
 
@@ -30,9 +48,9 @@ based on the instruction patterns matching the regular expression
 "VQSHL.*imm.*". The resulting binary is written to vqshlimm.out.
 
 This binary can then be passed to the risu program, which is
-written in C. (Build it by running 'make'.) You need to run risu
-on both an ARM native target and on the program under test. The
-ARM native system is the 'master' end, so run it like this:
+written in C. You need to run risu on both an ARM native target
+and on the program under test. The ARM native system is the 'master'
+end, so run it like this:
 
   ./risu --master vqshlimm.out
 
