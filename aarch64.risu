@@ -2404,64 +2404,107 @@ BIT     A64_V  0 Q:1 1 01110  size:2 1 rm:5 00011 1 rn:5 rd:5 # size: 10
 BIF     A64_V  0 Q:1 1 01110  size:2 1 rm:5 00011 1 rn:5 rd:5 # size: 11
 
 # C3.6.17 AdvSIMD two-reg misc
-# XXX not complete
-#template A64_V 0 Q U 01110 size:2 10000 op:5 10 rn:5 rd:5
-
-CNT_NOT_RBIT_2MISC A64_V 0 Q U 01110 size:2 10000 00101 10 rn:5 rd:5
-CMGT_CMGE_2MISC A64_V 0 Q U 01110 size:2 10000 01000 10 rn:5 rd:5
-CMEQ_CMLE_2MISC A64_V 0 Q U 01110 size:2 10000 01001 10 rn:5 rd:5
-CMLT_2MISC A64_V 0 Q U 01110 size:2 10000 01010 10 rn:5 rd:5
-ABS_NEG_2MISC A64_V 0 Q U 01110 size:2 10000 01011 10 rn:5 rd:5
-REV_2MISC A64_V 0 Q U 01110 size:2 10000 0000 op 10 rn:5 rd:5
-
-# 2misc narrowing extract ops
-XTN_2MISC A64_V 0 Q 0 01110 size:2 10000 10010 10 rn:5 rd:5
-SQXTUN_2MISC A64_V 0 Q 1 01110 size:2 10000 10010 10 rn:5 rd:5
-SQXTN_2MISC A64_V 0 Q 0 01110 size:2 10000 10100 10 rn:5 rd:5
-UQXTN_2MISC A64_V 0 Q 1 01110 size:2 10000 10100 10 rn:5 rd:5
-
-# a few of the fp ops
-FABS_FNEG_2MISC A64_V 0 Q U 01110 size:2 10000 01111 10 rn:5 rd:5
-
-FCMGT_2MISC A64_V 0 Q 0 01110 size:2 10000 01100 10 rn:5 rd:5
-FCMEQ_2MISC A64_V 0 Q 0 01110 size:2 10000 01110 10 rn:5 rd:5
-FCMLT_2MISC A64_V 0 Q 1 01110 size:2 10000 01100 10 rn:5 rd:5
-FCMGE_2MISC A64_V 0 Q 1 01110 size:2 10000 01101 10 rn:5 rd:5
-FCMLE_2MISC A64_V 0 Q 1 01110 size:2 10000 01101 10 rn:5 rd:5
-
-# SADDLP/UADDLP, SADALP, UADALP
-ADDLP_2MISC A64_V 0 Q U 01110 size:2 10000 00010 10 rn:5 rd:5
-ADALP_2MISC A64_V 0 Q U 01110 size:2 10000 00110 10 rn:5 rd:5
-
-SHLL_2MISC A64_V 0 Q 1 01110 size:2 10000 10011 10 rn:5 rd:5
-
-FCVTNS_2MISC A64_V 0 Q 0 01110 0 sz 10000 11010 10 rn:5 rd:5
-FCVTMS_2MISC A64_V 0 Q 0 01110 0 sz 10000 11011 10 rn:5 rd:5
-FCVTAS_2MISC A64_V 0 Q 0 01110 0 sz 10000 11100 10 rn:5 rd:5
-FCVTPS_2MISC A64_V 0 Q 0 01110 1 sz 10000 11010 10 rn:5 rd:5
-FCVTZS_2MISC A64_V 0 Q 0 01110 1 sz 10000 11011 10 rn:5 rd:5
-
-FCVTNU_2MISC A64_V 0 Q 1 01110 0 sz 10000 11010 10 rn:5 rd:5
-FCVTMU_2MISC A64_V 0 Q 1 01110 0 sz 10000 11011 10 rn:5 rd:5
-FCVTAU_2MISC A64_V 0 Q 1 01110 0 sz 10000 11100 10 rn:5 rd:5
-FCVTPU_2MISC A64_V 0 Q 1 01110 1 sz 10000 11010 10 rn:5 rd:5
-FCVTZU_2MISC A64_V 0 Q 1 01110 1 sz 10000 11011 10 rn:5 rd:5
-
-FCVTN_2MISC A64_V 0 Q 0 01110 0 sz 10000 10110 10 rn:5 rd:5
-FCVTL_2MISC A64_V 0 Q 0 01110 0 sz 10000 10111 10 rn:5 rd:5
-FCVTXN_2MISC A64_V 0 Q 1 01110 0 sz 10000 10110 10 rn:5 rd:5
-
-FRINTN_2MISC A64_V 0 Q 0 01110 0 sz 10000 11000 10 rn:5 rd:5
-FRINTM_2MISC A64_V 0 Q 0 01110 0 sz 10000 11001 10 rn:5 rd:5
-FRINTP_2MISC A64_V 0 Q 0 01110 1 sz 10000 11000 10 rn:5 rd:5
-FRINTZ_2MISC A64_V 0 Q 0 01110 1 sz 10000 11001 10 rn:5 rd:5
-FRINTA_2MISC A64_V 0 Q 1 01110 0 sz 10000 11000 10 rn:5 rd:5
-FRINTX_2MISC A64_V 0 Q 1 01110 0 sz 10000 11001 10 rn:5 rd:5
-
-SQABS_2MISC A64_V 0 Q 0 01110 sz:2 10000 00111 10 rn:5 rd:5
-SQNEG_2MISC A64_V 0 Q 1 01110 sz:2 10000 00111 10 rn:5 rd:5
-SUQADD_2MISC A64_V 0 Q 0 01110 sz:2 10000 00011 10 rn:5 rd:5
-USQADD_2MISC A64_V 0 Q 1 01110 sz:2 10000 00011 10 rn:5 rd:5
+# 31 30 29 28 27 26 25 24 23    22 21 20 19 18 17 16      12 11 10 9    5 4    0
+#  0  Q  U  0  1  1  1  0 [ size ]  1  0  0  0  0 [ opcode ] 1   0 [ Rn ] [ Rd ]
+#
+REV64v  A64_V   0 Q:1 0 01110 size:2 10000 00000 10 rn:5 rd:5
+REV16v  A64_V   0 Q:1 0 01110 size:2 10000 00001 10 rn:5 rd:5
+SADDLP  A64_V   0 Q:1 0 01110 size:2 10000 00010 10 rn:5 rd:5
+SUQADD  A64_V   0 Q:1 0 01110 size:2 10000 00011 10 rn:5 rd:5
+CLSv    A64_V   0 Q:1 0 01110 size:2 10000 00100 10 rn:5 rd:5
+CNT     A64_V   0 Q:1 0 01110 size:2 10000 00101 10 rn:5 rd:5
+SADALP  A64_V   0 Q:1 0 01110 size:2 10000 00110 10 rn:5 rd:5
+SQABS   A64_V   0 Q:1 0 01110 size:2 10000 00111 10 rn:5 rd:5
+CMGTz   A64_V   0 Q:1 0 01110 size:2 10000 01000 10 rn:5 rd:5
+CMEQz   A64_V   0 Q:1 0 01110 size:2 10000 01001 10 rn:5 rd:5
+CMLTz   A64_V   0 Q:1 0 01110 size:2 10000 01010 10 rn:5 rd:5
+ABSv    A64_V   0 Q:1 0 01110 size:2 10000 01011 10 rn:5 rd:5
+XTNv    A64_V   0 Q:1 0 01110 size:2 10000 10010 10 rn:5 rd:5
+SQXTNv  A64_V   0 Q:1 0 01110 size:2 10000 10100 10 rn:5 rd:5
+FCVTN   A64_V   0 Q:1 0 01110 size:2 10000 10110 10 rn:5 rd:5 \
+!constraints { $size < 2; }
+FCVTL   A64_V   0 Q:1 0 01110 size:2 10000 10111 10 rn:5 rd:5 \
+!constraints { $size < 2; }
+FRINTNv A64_V   0 Q:1 0 01110 size:2 10000 11000 10 rn:5 rd:5 \
+!constraints { $size < 2; }
+FRINTMv A64_V   0 Q:1 0 01110 size:2 10000 11001 10 rn:5 rd:5 \
+!constraints { $size < 2; }
+FCVTNSv A64_V   0 Q:1 0 01110 size:2 10000 11010 10 rn:5 rd:5 \
+!constraints { $size < 2; }
+FCVTMSv A64_V   0 Q:1 0 01110 size:2 10000 11011 10 rn:5 rd:5 \
+!constraints { $size < 2; }
+FCVTASv A64_V   0 Q:1 0 01110 size:2 10000 11100 10 rn:5 rd:5 \
+!constraints { $size < 2; }
+SCVTFv  A64_V   0 Q:1 0 01110 size:2 10000 11101 10 rn:5 rd:5 \
+!constraints { $size < 2; }
+SCVTFv_RES1 A64_V   0 0 0 01110 01 10000 11101 10 rn:5 rd:5
+FCMGTz  A64_V   0 Q:1 0 01110 size:2 10000 01100 10 rn:5 rd:5 \
+!constraints { $size > 1; }
+FCMEQz  A64_V   0 Q:1 0 01110 size:2 10000 01101 10 rn:5 rd:5 \
+!constraints { $size > 1; }
+FCMLTz  A64_V   0 Q:1 0 01110 size:2 10000 01110 10 rn:5 rd:5 \
+!constraints { $size > 1; }
+FABSv   A64_V   0 Q:1 0 01110 size:2 10000 01111 10 rn:5 rd:5 \
+!constraints { $size > 1; }
+FRINTPv A64_V   0 Q:1 0 01110 size:2 10000 11000 10 rn:5 rd:5 \
+!constraints { $size > 1; }
+FRINTZv A64_V   0 Q:1 0 01110 size:2 10000 11001 10 rn:5 rd:5 \
+!constraints { $size > 1; }
+FCVTPSv A64_V   0 Q:1 0 01110 size:2 10000 11010 10 rn:5 rd:5 \
+!constraints { $size > 1; }
+FCVTPSvi A64_V   0 Q:1 0 01110 size:2 10000 11011 10 rn:5 rd:5 \
+!constraints { $size > 1; }
+URECPE  A64_V   0 Q:1 0 01110 size:2 10000 11100 10 rn:5 rd:5 \
+!constraints { $size > 1; }
+FRECPE  A64_V   0 Q:1 0 01110 size:2 10000 11100 10 rn:5 rd:5 \
+!constraints { $size > 1; }
+REV32v  A64_V   1 Q:1 0 01110 size:2 10000 00000 10 rn:5 rd:5
+UADDLP  A64_V   1 Q:1 0 01110 size:2 10000 00010 10 rn:5 rd:5
+USQADD  A64_V   1 Q:1 0 01110 size:2 10000 00011 10 rn:5 rd:5
+CLZv    A64_V   1 Q:1 0 01110 size:2 10000 00100 10 rn:5 rd:5
+UADALP  A64_V   1 Q:1 0 01110 size:2 10000 00110 10 rn:5 rd:5
+SQNEG   A64_V   1 Q:1 0 01110 size:2 10000 00111 10 rn:5 rd:5
+CMGEz   A64_V   1 Q:1 0 01110 size:2 10000 01000 10 rn:5 rd:5
+CMLEz   A64_V   1 Q:1 0 01110 size:2 10000 01001 10 rn:5 rd:5
+NEGv    A64_V   0 Q:1 1 01110 size:2 10000 01011 10 rn:5 rd:5
+SQXTUN  A64_V   1 Q:1 0 01110 size:2 10000 10010 10 rn:5 rd:5
+SHLL    A64_V   1 Q:1 0 01110 size:2 10000 10011 10 rn:5 rd:5
+UQXTNv  A64_V   0 Q:1 1 01110 size:2 10000 10100 10 rn:5 rd:5
+FCVTXN  A64_V   0 Q:1 1 01110 size:2 10000 10110 10 rn:5 rd:5 \
+!constraints { $size < 2; }
+FRINTAv A64_V   0 Q:1 1 01110 size:2 10000 11000 10 rn:5 rd:5 \
+!constraints { $size < 2; }
+FRINTXv A64_V   0 Q:1 1 01110 size:2 10000 11001 10 rn:5 rd:5 \
+!constraints { $size < 2; }
+FCVTNUv A64_V   0 Q:1 1 01110 size:2 10000 11010 10 rn:5 rd:5 \
+!constraints { $size < 2; }
+FCVTMUv A64_V   0 Q:1 1 01110 size:2 10000 11011 10 rn:5 rd:5 \
+!constraints { $size < 2; }
+FCVTAUv A64_V   0 Q:1 1 01110 size:2 10000 11100 10 rn:5 rd:5 \
+!constraints { $size < 2; }
+UCVTFv  A64_V   0 Q:1 1 01110 size:2 10000 11101 10 rn:5 rd:5 \
+!constraints { $size < 2; }
+UCVTFv_RES1 A64_V 0 0 1 01110 01 10000 11101 10 rn:5 rd:5
+NOT     A64_V   0 Q:1 1 01110 00 10000 00101 10 rn:5 rd:5
+RBITv   A64_V   0 Q:1 1 01110 01 10000 00101 10 rn:5 rd:5
+FCMGEz  A64_V   0 Q:1 1 01110 size:2 10000 00101 10 rn:5 rd:5 \
+!constraints { $size > 1; }
+FCMLEz  A64_V   0 Q:1 1 01110 size:2 10000 00101 10 rn:5 rd:5 \
+!constraints { $size > 1; }
+FNEGv   A64_V   0 Q:1 1 01110 size:2 10000 01111 10 rn:5 rd:5 \
+!constraints { $size > 1; }
+FRINTIv A64_V   0 Q:1 1 01110 size:2 10000 11001 10 rn:5 rd:5 \
+!constraints { $size > 1; }
+FCVTPUv A64_V   0 Q:1 1 01110 size:2 10000 11010 10 rn:5 rd:5 \
+!constraints { $size > 1; }
+FCVTZUvi A64_V  0 Q:1 1 01110 size:2 10000 11011 10 rn:5 rd:5 \
+!constraints { $size > 1; }
+URSQRTE  A64_V  0 Q:1 1 01110 size:2 10000 11100 10 rn:5 rd:5 \
+!constraints { $size > 1; }
+FRSQRTE  A64_V  0 Q:1 1 01110 size:2 10000 11101 10 rn:5 rd:5 \
+!constraints { $size > 1; }
+FSQRTv   A64_V  0 Q:1 1 01110 size:2 10000 11111 10 rn:5 rd:5 \
+!constraints { $size > 1; }
 
 # C3.6.18 AdvSIMD vector x indexed element
 # Complete coverage. Note we tend to leave in U bit etc which
