@@ -2322,73 +2322,86 @@ SQDMULL_RES A64_V 0 Q 1 0 1 1 1 0 size:2 1 rm:5 1101 00 rn:5 rd:5
 # opcode 1111 unallocated
 SIMD_3D_RES A64_V 0 Q U 0 1 1 1 0 size:2 1 rm:5 1111 00 rn:5 rd:5
 
-# C3.6.16 AdvSIMD 3 same
-# XXX should really split this out
-3SAME_LOGIC A64_V 0 Q U 01110 size:2 1 rm:5 00011 1 rn:5 rd:5
-CMGT_3SAME A64_V 0 Q 0 01110 size:2 1 rm:5 00110 1 rn:5 rd:5
-CMGE_3SAME A64_V 0 Q 0 01110 size:2 1 rm:5 00111 1 rn:5 rd:5
-CMTST_3SAME A64_V 0 Q 0 01110 size:2 1 rm:5 10001 1 rn:5 rd:5
-ADD_3SAME A64_V 0 Q 0 01110 size:2 1 rm:5 10000 1 rn:5 rd:5
-
-# these include the unsigned versions
-HADD_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 00000 1 rn:5 rd:5
-QADD_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 00001 1 rn:5 rd:5
-RHADD_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 00010 1 rn:5 rd:5
-HSUB_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 00100 1 rn:5 rd:5
-QSUB_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 00101 1 rn:5 rd:5
-SHL_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 01000 1 rn:5 rd:5
-QSHL_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 01001 1 rn:5 rd:5
-RSHL_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 01010 1 rn:5 rd:5
-QRSHL_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 01011 1 rn:5 rd:5
-MAX_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 01100 1 rn:5 rd:5
-MIN_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 01101 1 rn:5 rd:5
-ABD_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 01110 1 rn:5 rd:5
-ABA_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 01111 1 rn:5 rd:5
-MAXP_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 10100 1 rn:5 rd:5
-MINP_3SAME A64_V 0 Q U 01110 size:2 1 rm:5 10101 1 rn:5 rd:5
-
-SQDMULH_3SAME A64_V 0 Q 0 01110 size:2 1 rm:5 10110 1 rn:5 rd:5
-ADDP_3SAME A64_V 0 Q 0 01110 size:2 1 rm:5 10111 1 rn:5 rd:5
-SQRDMULH_3SAME A64_V 0 Q 1 01110 size:2 1 rm:5 10110 1 rn:5 rd:5
-
-MLA_3SAME A64_V 0 Q 0 01110 size:2 1 rm:5 10010 1 rn:5 rd:5
-MUL_3SAME A64_V 0 Q 0 01110 size:2 1 rm:5 10011 1 rn:5 rd:5
-MLS_3SAME A64_V 0 Q 1 01110 size:2 1 rm:5 10010 1 rn:5 rd:5
-PMUL_3SAME A64_V 0 Q 1 01110 size:2 1 rm:5 10011 1 rn:5 rd:5
-
-CMHI_3SAME A64_V 0 Q 1 01110 size:2 1 rm:5 00110 1 rn:5 rd:5
-CMHS_3SAME A64_V 0 Q 1 01110 size:2 1 rm:5 00111 1 rn:5 rd:5
-CMEQ_3SAME A64_V 0 Q 1 01110 size:2 1 rm:5 10001 1 rn:5 rd:5
-SUB_3SAME A64_V 0 Q 1 01110 size:2 1 rm:5 10000 1 rn:5 rd:5
-
-# FP 3-same ops (these are complete)
-FMAXNM_3SAME A64_V 0 Q 0 01110 0 size 1 rm:5 11000 1 rn:5 rd:5
-FMLA_3SAME A64_V   0 Q 0 01110 0 size 1 rm:5 11001 1 rn:5 rd:5
-FADD_3SAME A64_V   0 Q 0 01110 0 size 1 rm:5 11010 1 rn:5 rd:5
-FMULX_3SAME A64_V  0 Q 0 01110 0 size 1 rm:5 11011 1 rn:5 rd:5
-FCMEQ_3SAME A64_V  0 Q 0 01110 0 size 1 rm:5 11100 1 rn:5 rd:5
-FMAX_3SAME A64_V   0 Q 0 01110 0 size 1 rm:5 11110 1 rn:5 rd:5
-FRECPS_3SAME A64_V 0 Q 0 01110 0 size 1 rm:5 11111 1 rn:5 rd:5
-
-FMINNM_3SAME A64_V   0 Q 0 01110 1 size 1 rm:5 11000 1 rn:5 rd:5
-FMLS_3SAME A64_V     0 Q 0 01110 1 size 1 rm:5 11001 1 rn:5 rd:5
-FSUB_3SAME A64_V     0 Q 0 01110 1 size 1 rm:5 11010 1 rn:5 rd:5
-FMIN_3SAME A64_V     0 Q 0 01110 1 size 1 rm:5 11110 1 rn:5 rd:5
-FRSQRTS_3SAME A64_V  0 Q 0 01110 1 size 1 rm:5 11111 1 rn:5 rd:5
-
-FMAXNMP_3SAME A64_V 0 Q 1 01110 0 size 1 rm:5 11000 1 rn:5 rd:5
-FADDP_3SAME A64_V   0 Q 1 01110 0 size 1 rm:5 11010 1 rn:5 rd:5
-FMUL_3SAME A64_V    0 Q 1 01110 0 size 1 rm:5 11011 1 rn:5 rd:5
-FCMGE_3SAME A64_V   0 Q 1 01110 0 size 1 rm:5 11100 1 rn:5 rd:5
-FACGE_3SAME A64_V   0 Q 1 01110 0 size 1 rm:5 11101 1 rn:5 rd:5
-FMAXP_3SAME A64_V   0 Q 1 01110 0 size 1 rm:5 11110 1 rn:5 rd:5
-FDIV_3SAME A64_V    0 Q 1 01110 0 size 1 rm:5 11111 1 rn:5 rd:5
-
-FMINNMP_3SAME A64_V  0 Q 1 01110 1 size 1 rm:5 11000 1 rn:5 rd:5
-FABD_3SAME A64_V     0 Q 1 01110 1 size 1 rm:5 11010 1 rn:5 rd:5
-FCMGT_3SAME A64_V    0 Q 1 01110 1 size 1 rm:5 11100 1 rn:5 rd:5
-FACGT_3SAME A64_V    0 Q 1 01110 1 size 1 rm:5 11101 1 rn:5 rd:5
-FMINP_3SAME A64_V    0 Q 1 01110 1 size 1 rm:5 11110 1 rn:5 rd:5
+# C3.6.16 AdvSIMD three same
+# 31 30 29 28 27 26 25 24 23 22 21 20    16 15      11 10  9    5   4    0
+#  0  Q  U  0  1  1  1  0  size  1 [  Rm  ] [ opcode ]  1 [  Rn  ] [  Rd  ]
+SHADD   A64_V  0 Q:1 0 01110  size:2 1 rm:5 00000 1 rn:5 rd:5
+SQADDv  A64_V  0 Q:1 0 01110  size:2 1 rm:5 00001 1 rn:5 rd:5
+SRHADD  A64_V  0 Q:1 0 01110  size:2 1 rm:5 00010 1 rn:5 rd:5
+SHSUB   A64_V  0 Q:1 0 01110  size:2 1 rm:5 00100 1 rn:5 rd:5
+SQSUBv   A64_V  0 Q:1 0 01110  size:2 1 rm:5 00101 1 rn:5 rd:5
+CMGTv    A64_V  0 Q:1 0 01110  size:2 1 rm:5 00110 1 rn:5 rd:5
+CMGEv    A64_V  0 Q:1 0 01110  size:2 1 rm:5 00111 1 rn:5 rd:5
+SSHLv    A64_V  0 Q:1 0 01110  size:2 1 rm:5 01000 1 rn:5 rd:5
+SQSHLv   A64_V  0 Q:1 0 01110  size:2 1 rm:5 01001 1 rn:5 rd:5
+SRSHLv   A64_V  0 Q:1 0 01110  size:2 1 rm:5 01010 1 rn:5 rd:5
+SQRSHLv  A64_V  0 Q:1 0 01110  size:2 1 rm:5 01011 1 rn:5 rd:5
+SMAX    A64_V  0 Q:1 0 01110  size:2 1 rm:5 01100 1 rn:5 rd:5
+SMIN    A64_V  0 Q:1 0 01110  size:2 1 rm:5 01101 1 rn:5 rd:5
+SABD    A64_V  0 Q:1 0 01110  size:2 1 rm:5 01110 1 rn:5 rd:5
+SABA    A64_V  0 Q:1 0 01110  size:2 1 rm:5 01111 1 rn:5 rd:5
+ADDv     A64_V  0 Q:1 0 01110  size:2 1 rm:5 10000 1 rn:5 rd:5
+CMTSTv   A64_V  0 Q:1 0 01110  size:2 1 rm:5 10001 1 rn:5 rd:5
+MLA     A64_V  0 Q:1 0 01110  size:2 1 rm:5 10010 1 rn:5 rd:5
+MUL     A64_V  0 Q:1 0 01110  size:2 1 rm:5 10011 1 rn:5 rd:5
+SMAXP   A64_V  0 Q:1 0 01110  size:2 1 rm:5 10100 1 rn:5 rd:5
+SMINP   A64_V  0 Q:1 0 01110  size:2 1 rm:5 10101 1 rn:5 rd:5
+SQDMULHv A64_V  0 Q:1 0 01110  size:2 1 rm:5 10110 1 rn:5 rd:5
+ADDPv    A64_V  0 Q:1 0 01110  size:2 1 rm:5 10111 1 rn:5 rd:5
+FMAXNMv  A64_V  0 Q:1 0 01110  size:2 1 rm:5 11000 1 rn:5 rd:5 # size:0x
+FMLAv    A64_V  0 Q:1 0 01110  size:2 1 rm:5 11001 1 rn:5 rd:5 # size:0x
+FADDv    A64_V  0 Q:1 0 01110  size:2 1 rm:5 11010 1 rn:5 rd:5 # size:0x
+FMULXv   A64_V  0 Q:1 0 01110  size:2 1 rm:5 11011 1 rn:5 rd:5 # size:0x
+FCMEQv   A64_V  0 Q:1 0 01110  size:2 1 rm:5 11100 1 rn:5 rd:5 # size:0x
+FMAXv    A64_V  0 Q:1 0 01110  size:2 1 rm:5 11110 1 rn:5 rd:5 # size:0x
+FRECPSv  A64_V  0 Q:1 0 01110  size:2 1 rm:5 11111 1 rn:5 rd:5 # size:0x
+ANDv     A64_V  0 Q:1 0 01110  size:2 1 rm:5 00011 1 rn:5 rd:5 # size:00
+BICv     A64_V  0 Q:1 0 01110  size:2 1 rm:5 00011 1 rn:5 rd:5 # size:01
+FMINNMv  A64_V  0 Q:1 0 01110  size:2 1 rm:5 11000 1 rn:5 rd:5 # size:1x
+FMLSv    A64_V  0 Q:1 0 01110  size:2 1 rm:5 11001 1 rn:5 rd:5 # size:1x
+FSUBv    A64_V  0 Q:1 0 01110  size:2 1 rm:5 11010 1 rn:5 rd:5 # size:1x
+FMINv    A64_V  0 Q:1 0 01110  size:2 1 rm:5 11110 1 rn:5 rd:5 # size:1x
+FRSQRTSv A64_V  0 Q:1 0 01110  size:2 1 rm:5 11111 1 rn:5 rd:5 # size:1x
+ORRv     A64_V  0 Q:1 0 01110  size:2 1 rm:5 00011 1 rn:5 rd:5 # size:10
+ORNv     A64_V  0 Q:1 0 01110  size:2 1 rm:5 00011 1 rn:5 rd:5 # size:11
+UHADD   A64_V  0 Q:1 1 01110  size:2 1 rm:5 00000 1 rn:5 rd:5
+UQADDv   A64_V  0 Q:1 1 01110  size:2 1 rm:5 00001 1 rn:5 rd:5
+URHADD  A64_V  0 Q:1 1 01110  size:2 1 rm:5 00010 1 rn:5 rd:5
+UHSUB   A64_V  0 Q:1 1 01110  size:2 1 rm:5 00100 1 rn:5 rd:5
+UQSUBv   A64_V  0 Q:1 1 01110  size:2 1 rm:5 00101 1 rn:5 rd:5
+CMHIv    A64_V  0 Q:1 1 01110  size:2 1 rm:5 00110 1 rn:5 rd:5
+CMHSv    A64_V  0 Q:1 1 01110  size:2 1 rm:5 00111 1 rn:5 rd:5
+USHLv    A64_V  0 Q:1 1 01110  size:2 1 rm:5 01000 1 rn:5 rd:5
+UQSHLv   A64_V  0 Q:1 1 01110  size:2 1 rm:5 01001 1 rn:5 rd:5
+URSHLv   A64_V  0 Q:1 1 01110  size:2 1 rm:5 01010 1 rn:5 rd:5
+UQRSHLv  A64_V  0 Q:1 1 01110  size:2 1 rm:5 01011 1 rn:5 rd:5
+UMAX    A64_V  0 Q:1 1 01110  size:2 1 rm:5 01100 1 rn:5 rd:5
+UMIN    A64_V  0 Q:1 1 01110  size:2 1 rm:5 01101 1 rn:5 rd:5
+UABD    A64_V  0 Q:1 1 01110  size:2 1 rm:5 01110 1 rn:5 rd:5
+UABA    A64_V  0 Q:1 1 01110  size:2 1 rm:5 01111 1 rn:5 rd:5
+SUBv     A64_V  0 Q:1 1 01110  size:2 1 rm:5 10000 1 rn:5 rd:5
+CMEQv    A64_V  0 Q:1 1 01110  size:2 1 rm:5 10001 1 rn:5 rd:5
+MLS     A64_V  0 Q:1 1 01110  size:2 1 rm:5 10010 1 rn:5 rd:5
+PMUL    A64_V  0 Q:1 1 01110  size:2 1 rm:5 10011 1 rn:5 rd:5
+UMAXP   A64_V  0 Q:1 1 01110  size:2 1 rm:5 10100 1 rn:5 rd:5
+UMINP   A64_V  0 Q:1 1 01110  size:2 1 rm:5 10101 1 rn:5 rd:5
+SQRDMULHv A64_V   0 Q:1 1 01110  size:2 1 rm:5 10110 1 rn:5 rd:5
+FMAXNMPv A64_V 0 Q:1 1 01110  size:2 1 rm:5 11000 1 rn:5 rd:5 # size: 0x
+FADDPv   A64_V  0 Q:1 1 01110  size:2 1 rm:5 11010 1 rn:5 rd:5 # size: 0x
+FMULv    A64_V  0 Q:1 1 01110  size:2 1 rm:5 11011 1 rn:5 rd:5 # size: 0x
+FCMGEv   A64_V  0 Q:1 1 01110  size:2 1 rm:5 11100 1 rn:5 rd:5 # size: 0x
+FACGEv   A64_V  0 Q:1 1 01110  size:2 1 rm:5 11101 1 rn:5 rd:5 # size: 0x
+FMAXPv   A64_V  0 Q:1 1 01110  size:2 1 rm:5 11110 1 rn:5 rd:5 # size: 0x
+FDIVv    A64_V  0 Q:1 1 01110  size:2 1 rm:5 11111 1 rn:5 rd:5 # size: 0x
+EORv     A64_V  0 Q:1 1 01110  size:2 1 rm:5 00011 1 rn:5 rd:5 # size: 00
+BSL     A64_V  0 Q:1 1 01110  size:2 1 rm:5 00011 1 rn:5 rd:5 # size: 01
+FMINNMPv A64_V  0 Q:1 1 01110  size:2 1 rm:5 11000 1 rn:5 rd:5 # size: 1x
+FABDv    A64_V  0 Q:1 1 01110  size:2 1 rm:5 11010 1 rn:5 rd:5 # size: 1x
+FCMGTv   A64_V  0 Q:1 1 01110  size:2 1 rm:5 11100 1 rn:5 rd:5 # size: 1x
+FACGTv   A64_V  0 Q:1 1 01110  size:2 1 rm:5 11101 1 rn:5 rd:5 # size: 1x
+FMINPv   A64_V  0 Q:1 1 01110  size:2 1 rm:5 11110 1 rn:5 rd:5 # size: 1x
+BIT     A64_V  0 Q:1 1 01110  size:2 1 rm:5 00011 1 rn:5 rd:5 # size: 10
+BIF     A64_V  0 Q:1 1 01110  size:2 1 rm:5 00011 1 rn:5 rd:5 # size: 11
 
 # C3.6.17 AdvSIMD two-reg misc
 # XXX not complete
