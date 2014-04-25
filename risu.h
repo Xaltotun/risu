@@ -13,16 +13,7 @@
 #define RISU_H
 
 #include <inttypes.h>
-
-#include "config.h"
-
-#ifndef HAVE_SOCKLEN_T
-#define socklen_t int
-#endif /* HAVE_SOCKLEN_T */
-
-#ifndef HAVE_UINTPTR_T
-#define uintptr_t size_t
-#endif /* HAVE_UINTPTR_T */
+#include <stdint.h>
 
 /* Socket related routines */
 int master_connect(int port);
