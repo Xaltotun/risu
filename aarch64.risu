@@ -1900,8 +1900,9 @@ BICS_RES A64 0 11 01010 shft:2 1 rm:5 1 imm:5 rn:5 rd:5
 # XXX
 # 1a59c:       6e0e72f9        .inst   0x6e0e72f9 ; undefined [XXX]
 
-EXT A64_V 0 Q:1 101110000 rm:5 0 imm:4 0 rn:5 rd:5 \
+EXT A64_V      0 Q:1 101110000 rm:5 0  imm:4 0 rn:5 rd:5 \
 !constraints { $Q == 0 || !($imm & 0x08); }
+EXT_RES A64_V  0 0   101110000 rm:5 01 imm:3 0 rn:5 rd:5
 
 # C3.6.2 AdvSIMD TBL/TBX
 # 31 30 29 28 27 26 25 24 23 22 21 20  16 15 14 13 12 11 10 9  5 4  0
