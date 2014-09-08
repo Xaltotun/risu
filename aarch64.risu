@@ -2386,6 +2386,26 @@ FMLA_IDX A64_V 0 Q U 01111 sz:2 l m rm:4 0001 h 0 rn:5 rd:5
 FMLS_IDX A64_V 0 Q U 01111 sz:2 l m rm:4 0101 h 0 rn:5 rd:5
 FMUL_FMULX_IDX A64_V 0 Q U 01111 sz:2 l m rm:4 1001 h 0 rn:5 rd:5
 
+# C3.6.19 Cryptographic AES
+AESE   A64_V 0100 1110 sz:2 10100 00100 10 rn:5 rd:5
+AESD   A64_V 0100 1110 sz:2 10100 00101 10 rn:5 rd:5
+AESMC  A64_V 0100 1110 sz:2 10100 00110 10 rn:5 rd:5
+AESIMC A64_V 0100 1110 sz:2 10100 00111 10 rn:5 rd:5
+
+# C3.6.20 Cryptographic three-register SHA
+SHA1C     A64_V 0101 1110 sz:2 0 rm:5 0 000 00 rn:5 rd:5
+SHA1P     A64_V 0101 1110 sz:2 0 rm:5 0 001 00 rn:5 rd:5
+SHA1M     A64_V 0101 1110 sz:2 0 rm:5 0 010 00 rn:5 rd:5
+SHA1SU0   A64_V 0101 1110 sz:2 0 rm:5 0 011 00 rn:5 rd:5
+SHA256H   A64_V 0101 1110 sz:2 0 rm:5 0 100 00 rn:5 rd:5
+SHA256H2  A64_V 0101 1110 sz:2 0 rm:5 0 101 00 rn:5 rd:5
+SHA256SU1 A64_V 0101 1110 sz:2 0 rm:5 0 110 00 rn:5 rd:5
+
+# C3.6.21 Cryptographic two-register SHA
+SHA1H     A64_V 0101 1110 sz:2 10100 00000 10 rn:5 rd:5
+SHA1SU1   A64_V 0101 1110 sz:2 10100 00001 10 rn:5 rd:5
+SHA256SU0 A64_V 0101 1110 sz:2 10100 00010 10 rn:5 rd:5
+
 # C3.6.22 Floating-point compare
 # 31 30 29 28 27 26 25 24 23 22 21 20  16 15 14 13 12 11 10 9    5 4       0
 #  M  0  S  1  1  1  1  0  type  1   Rm    op    1  0  0  0   Rn    opcode2

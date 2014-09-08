@@ -792,6 +792,23 @@ AESE A1 1111 0011 1 d 11 sz:2 00 vd:4 0011 00 m 0 vm:4
 AESIMC A1 1111 0011 1 d 11 sz:2 00 vd:4 0011 11 m 0 vm:4
 AESMC A1 1111 0011 1 d 11 sz:2 00 vd:4 0011 10 m 0 vm:4
 
+# SHA1, SHA256
+SHA1C    A1 1111 00100 d 00 vn:4 vd:4 1100 n q m 0 vm:4
+SHA1M    A1 1111 00100 d 10 vn:4 vd:4 1100 n q m 0 vm:4
+SHA1P    A1 1111 00100 d 01 vn:4 vd:4 1100 n q m 0 vm:4
+SHA1SU0  A1 1111 00100 d 11 vn:4 vd:4 1100 n q m 0 vm:4
+
+SHA256H   A1 1111 00110 d 00 vn:4 vd:4 1100 n q m 0 vm:4
+SHA256H2  A1 1111 00110 d 01 vn:4 vd:4 1100 n q m 0 vm:4
+SHA256SU1 A1 1111 00110 d 10 vn:4 vd:4 1100 n q m 0 vm:4
+
+SHA1H     A1 1111 00111 d 11 sz:2 01 vd:4 0 01011 m 0 vm:4
+SHA1SU1   A1 1111 00111 d 11 sz:2 10 vd:4 0 01110 m 0 vm:4
+SHA256SU0 A1 1111 00111 d 11 sz:2 10 vd:4 0 01111 m 0 vm:4
+
+# long polynomial multiply: op == 1, sz == 10
+VMULL_P64 A2 1111 001 u 1 d 10 vn:4 vd:4 11 1 0 n 0 m 0 vm:4
+
 # rounding, VFP: VRINTX, VRINTZ, VRINTR, VRINT[ANPM]
 VRINTX A1 cond:4 11101 d 110111 vd:4 101 sz 0 1 m 0 vm:4
 VRINTZR A1 cond:4 11101 d 110110 vd:4 101 sz op 1 m 0 vm:4
