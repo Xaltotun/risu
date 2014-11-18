@@ -318,16 +318,6 @@ sub write_mov_ri($$)
     }
 }
 
-sub aarch64_limm($$)
-{
-    my ($m, $r) = @_;
-    if ($m <= 0) {
-        die "aarch64_limm: invalid bit count m";
-    }
-
-    return ($r << 16) | (($m - 1) << 10);
-}
-
 # write random fp value of passed precision (1=single, 2=double, 4=quad)
 sub write_random_fpreg_var($)
 {
@@ -522,9 +512,7 @@ sub write_random_aarch64_regdata($)
 {
     my ($fp_enabled) = @_;
     # clear flags
-    insn32(0xd53b4200);                      # mrs     x0, nzcv
-    insn32(0x52000000 | aarch64_limm(4, 4)); # eori w0, w0, 0xf0000000
-    insn32(0xd51b4200);                      # msr     nzcv, x0
+    insn32(0xd51b421f);     # msr nzcv, xzr
 
     if ($fp_enabled) {
         # load floating point / SIMD registers
@@ -573,7 +561,22 @@ sub write_pc_adr($$)
         # When executing an ARM instruction, PC reads as the address of the current insn plus 8.
         $imm -= 8;
         insn32(0xe28f0000 | $rd << 12 | $imm);
+
     }
+}
+
+sub ctz($)
+{
+    # Count trailing zeros, similar semantic to gcc builtin:
+    # undefined return value if input is zero.
+    my ($in) = @_;
+
+    # XXX should use log2, popcount, ...
+    my $imm = 0;
+    for (my $cnt = $in; $cnt > 1; $cnt >>= 1) {
+        $imm += 1;
+    }
+    return $imm;
 }
 
 # clear bits in register to satisfy alignment.
@@ -584,12 +587,17 @@ sub write_align_reg($$)
     die "bad alignment!" if ($align < 2);
 
     if ($is_aarch64) {
-        # eor rd, rd, (align - 1)
-        # XXX should use log2, popcount, ...
-        my $imm = 0;
-        for (my $cnt = $align; $cnt > 1; $cnt >>= 1) { $imm += 1; }
-        insn32(0xd2400000 | ($imm - 1) << 10 | $rd << 5 | $rd);
+        # and rd, rd, ~(align - 1)    ; A64 BIC imm is an alias for AND
 
+        # Unfortunately we need to calculate the immr/imms/N values to get
+        # our desired immediate value. In this case we want to use an element
+        # size of 64, which means that N is 1, immS is the length of run of
+        # set bits in the mask, and immR is the rotation.
+        # N = 1, immR = 64 - ctz, imms = 63 - ctz
+        # (Note that an all bits-set mask is not encodable here, but
+        # the requirement for $align to be at least 2 avoids that.)
+        my $cnt = ctz($align);
+        insn32(0x92000000 | 1 << 22 | (64 - $cnt) << 16 | (63 - $cnt) << 10 | $rd << 5 | $rd);
     } else {
         # bic rd, rd, (align - 1)
         insn32(0xe3c00000 | $rd << 16 | $rd << 12 | ($align - 1));
