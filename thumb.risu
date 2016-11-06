@@ -11,7 +11,7 @@
 
 # Input file for risugen defining Thumb instructions
 
-.mode thumb
+.mode arm.thumb
 
 #ADD T1 000 1100 rm:3 rn:3 rd:3
 #ADD T3 11101 01 1000 s rn:4 0 imma:3 rd:4 immb:2 type:2 rm:4

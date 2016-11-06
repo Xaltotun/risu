@@ -11,7 +11,7 @@
 ###############################################################################
 
 # Input file for risugen defining AArch64 instructions
-.mode aarch64
+.mode arm.aarch64
 
 # from ARM DDI 0487A.a ARM Architecture Reference Manual
 # XXX NIY: branch, exception generation, system insns
