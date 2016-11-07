@@ -1007,7 +1007,7 @@ sub write_test_code($$$$)
     srand(0);
 
     # Get a list of the insn keys which are permitted by the re patterns
-    my @keys = keys %insn_details;
+    my @keys = sort keys %insn_details;
     if (@pattern_re) {
         my $re = '\b((' . join(')|(',@pattern_re) . '))\b';
         @keys = grep /$re/, @keys;
