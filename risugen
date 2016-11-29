@@ -20,6 +20,10 @@ use Getopt::Long;
 use Data::Dumper;
 use Module::Load;
 use Text::Balanced qw { extract_bracketed extract_multiple };
+# Make sure we can find the per-CPU-architecture modules in the
+# same directory as this script.
+use FindBin;
+use lib "$FindBin::Bin";
 
 my %insn_details;
 
