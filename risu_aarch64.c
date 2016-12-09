@@ -80,7 +80,7 @@ int send_register_info(int sock, void *uc)
  * NB: called from a signal handler.
  *
  * We don't have any kind of identifying info in the incoming data
- * that says whether it's register or memory data, so if the two
+ * that says whether it is register or memory data, so if the two
  * sides get out of sync then we will fail obscurely.
  */
 int recv_and_compare_register_info(int sock, void *uc)
