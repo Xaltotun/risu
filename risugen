@@ -288,7 +288,7 @@ Valid options:
                    'VMULL' will match 'VMULL A1' and 'VMULL A2' but not
                    'VMULL_scalar A1'. This is generally what you wanted.
     --not-pattern re[,re...] : exclude patterns matching regular expression.
-                   These RE's are applied after the matching pattern which
+                   These REs are applied after the matching pattern which
                    is useful if you want to exclude a specific instruction from
                    a general set you have excluded.
      --no-fp      : disable floating point: no fp init, randomization etc.
